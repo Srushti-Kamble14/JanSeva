@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+
+datasource db {
+  provider = "postgresql"
+    url      = env("DB_URL")
+}
+generator client {
+  provider = "prisma-client-js" 
+}
+
+enum Language {
+  ENGLISH
+  HINDI
+  MARATHI
+  TAMIL
+  TELUGU
+  BENGALI
+}
+
+enum Category {
+  STUDENT
+  FARMER
+  WOMEN
+  SENIOR_CITIZEN
+  STARTUP_FOUNDER
+}
+
+enum State {
+  MAHARASHTRA
+  TAMIL_NADU
+  KARNATAKA
+  PUNJAB
+  GUJARAT
+  RAJASTHAN
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  fullName String
+  email    String @unique
+  password String
+
+  profile   Profile?
+   refreshToken String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id    Int      @id @default(autoincrement())
+  phone String   @unique
+  dob   DateTime
+
+  preferredLanguage Language @default(ENGLISH)
+  category          Category @default(STUDENT)
+  state             State    @default(MAHARASHTRA)
+  annualIncome      Int
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

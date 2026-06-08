@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-dm-sans), sans-serif;
+  --font-serif: var(--font-cormorant-garamond), serif;
+  
+  --color-gold: #D4A017;
+  --color-gold-light: #F2C94C;
+  --color-gold-dim: #8B6914;
+  --color-gold-pale: rgba(212, 160, 23, 0.10);
+  
+  --color-dark-bg: #0A0A0A;
+  --color-dark-card: #111111;
+  --color-dark-border: rgba(212, 160, 23, 0.18);
+  
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-down: slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── VARIABLES ── */
+:root {
+  --gold: #D4A017;
+  --gold-light: #F2C94C;
+  --gold-dim: #8B6914;
+  --gold-pale: rgba(212,160,23,0.10);
+  --gold-pale2: rgba(212,160,23,0.06);
+  --black: #0A0A0A;
+  --black2: #111111;
+  --black3: #1A1A1A;
+  --black4: #222222;
+  --border: rgba(212,160,23,0.18);
+  --border-bright: rgba(212,160,23,0.45);
+  --text-main: #F0E6C8;
+  --text-muted: #A89060;
+  --text-dim: #6B5A3A;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --nav-h: 64px;
+}
+
+body.light {
+  --black: #F8F4EC;
+  --black2: #FFFFFF;
+  --black3: #F5F0E8;
+  --black4: #EDE8DD;
+  --border: rgba(139,105,20,0.15);
+  --border-bright: rgba(139,105,20,0.40);
+  --text-main: #1A1208;
+  --text-muted: #5C4A1E;
+  --text-dim: #9C8B6A;
+}
+
+body {
+  background: var(--black);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-serif); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black2); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ── SHARED BUTTONS ── */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  border: none;
+  color: #0A0A0A;
+  padding: 9px 22px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: filter 0.2s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-gold:hover { filter: brightness(1.12); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: none;
+  border: 0.5px solid var(--border-bright);
+  color: var(--text-main);
+  padding: 9px 22px;
+  border-radius: 9px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-ghost:hover { background: var(--gold-pale); color: var(--gold-light); }
+
+/* ── SHARED INPUTS ── */
+.input {
+  width: 100%;
+  background: var(--black3);
+  border: 0.5px solid var(--border);
+  color: var(--text-main);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus { border-color: var(--gold-dim); }
+.input::placeholder { color: var(--text-dim); }
+
+select.input { cursor: pointer; }
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-size: 12px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+
+/* ── SCHEME CARD (shared) ── */
+.scheme-card {
+  background: var(--black2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: border-color 0.25s, transform 0.25s;
+  cursor: pointer;
+}
+.scheme-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+
+.scheme-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.scheme-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--gold-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.scheme-category {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-dim);
+  margin-bottom: 6px;
+}
+.scheme-card h3 { font-size: 1rem; font-weight: 500; color: var(--text-main); margin-bottom: 8px; }
+.scheme-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+.scheme-card-footer { display: flex; align-items: center; justify-content: space-between; }
+.scheme-eligibility { font-size: 12px; color: var(--text-dim); }
+.btn-apply {
+  background: var(--gold-pale);
+  border: 0.5px solid var(--border-bright);
+  color: var(--gold-light);
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-apply:hover { background: rgba(212,160,23,0.22); }
+
+.save-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+.save-btn:hover, .save-btn.saved { color: var(--gold); }
+
+/* ── METRIC CARD ── */
+.metric-card {
+  background: var(--black2);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+.metric-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+.metric-value {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.metric-sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+
+/* Glassmorphic card styling utilities */
+.glass-panel {
+  background: rgba(26, 26, 26, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 160, 23, 0.12);
+}
+
+body.light .glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 105, 20, 0.12);
+}
