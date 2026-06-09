@@ -28,7 +28,11 @@ export default function ProfilePage() {
   const [savedStatus, setSavedStatus] = useState(true)
   const [errorMsg, setErrorMsg] = useState('')
 
-  const initialName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ") || ""
+ const initialName =
+  user?.fullName ||
+  user?.name ||
+  [user?.firstName, user?.lastName].filter(Boolean).join(" ") ||
+  ""
 
   // React Hook Form Configuration
   const {
@@ -72,7 +76,10 @@ export default function ProfilePage() {
         const userData = res.data?.data?.user
         if (!userData) return
 
-        const profileName = userData.name || [userData.firstName, userData.lastName].filter(Boolean).join(" ")
+       const profileName =
+  userData.fullName ||
+  userData.name ||
+  [userData.firstName, userData.lastName].filter(Boolean).join(" ")
         
         reset({
           name: profileName || "",
