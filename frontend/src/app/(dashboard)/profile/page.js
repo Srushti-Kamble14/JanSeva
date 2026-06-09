@@ -27,6 +27,7 @@ export default function ProfilePage() {
   const { user, savedSchemes, toggleSave, language, setLanguage } = useApp()
   const [savedStatus, setSavedStatus] = useState(true)
   const [errorMsg, setErrorMsg] = useState('')
+  const [isSaving, setIsSaving] = useState(false);
 
  const initialName =
   user?.fullName ||
@@ -58,9 +59,11 @@ export default function ProfilePage() {
 
   // Watch fields to detect form changes and mark as unsaved
   const formValues = watch()
-  useEffect(() => {
-    setSavedStatus(false)
-  }, [formValues])
+useEffect(() => {
+  if (!isSaving) {
+    setSavedStatus(false);
+  }
+}, [formValues]);
 
   // Hydrate form on mount from backend API
   useEffect(() => {
@@ -102,40 +105,49 @@ export default function ProfilePage() {
 
   const savedList = SCHEMES.filter(s => savedSchemes.includes(s.id))
 
-  const onSubmit = async (data) => {
-    setErrorMsg('')
-    try {
-      const token = localStorage.getItem("token")
-      if (!token) {
-        alert("Please login first")
-        router.push("/login")
-        return
+ const onSubmit = async (data) => {
+  try {
+    setIsSaving(true);
+    setErrorMsg("");
+
+    const token = localStorage.getItem("accessToken");
+
+    const incomeMap = {
+      "Below 2.5L": 1,
+      "2.5L-5L": 2,
+      "5L-10L": 3,
+      "Above 10L": 4,
+    };
+
+    const payload = {
+      phone: data.phone,
+      dob: data.dob,
+      preferredLanguage: data.language.toUpperCase(),
+      category: data.category.toUpperCase().replace(/\s+/g, "_"),
+      state: data.state.toUpperCase().replace(/\s+/g, "_"),
+      annualIncome: incomeMap[data.income],
+    };
+
+    await axios.post(
+      "http://localhost:5000/api/users/profile",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      const payload = {
-        fullName: data.name,
-        email: data.email,
-        phone: data.phone,
-        dob: data.dob,
-        prefLang: data.language,
-        category: data.category,
-        state: data.state,
-        annualIncome: data.income,
-      }
-
-      await axios.put("http://localhost:3000/api/users/profile", payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      // Sync local preferences
-      setLanguage(data.language)
-      setSavedStatus(true)
-      alert("Profile saved successfully!")
-    } catch (error) {
-      console.error(error)
-      setErrorMsg(error?.response?.data?.message || "Profile update failed")
-    }
+    setSavedStatus(true);
+  } catch (error) {
+    setErrorMsg(
+      error?.response?.data?.message || "Failed to save profile"
+    );
+  } finally {
+    setIsSaving(false);
   }
+};
+
 
   return (
     <div className="space-y-8 font-sans max-w-5xl mx-auto">
@@ -159,7 +171,12 @@ export default function ProfilePage() {
             savedStatus ? 'opacity-80' : ''
           }`}
         >
-          {savedStatus ? "Saved ✓" : "Save Changes"}
+          {/* {savedStatus ? "Saved ✓" : "Save Changes"} */}
+          {isSaving
+  ? "Saving..."
+  : savedStatus
+  ? "✅ Saved"
+  : "Saved Changes"}
         </button>
       </div>
 
@@ -219,13 +236,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="btn-gold !py-2.5 !px-6 text-sm font-semibold cursor-pointer shadow-md mt-6"
-          >
-            {isSubmitting ? 'Saving...' : 'Save Profile'}
-          </button>
+          
         </form>
 
         {/* Right Preferences column */}

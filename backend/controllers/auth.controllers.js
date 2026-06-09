@@ -111,3 +111,96 @@ export const loginUser = async(req,res)=>{
     return res.status(500).json({message:"User login failed" , error:error.message})
    }
 }
+
+// {
+//   "email" : "srushtikamble1409@gmail.com",
+//   "password" : "srushti123"
+// }
+
+// {
+//   "phone": "9876543210",
+//   "dob": "2003-05-14T00:00:00.000Z",
+//   "preferredLanguage": "ENGLISH",
+//   "category": "STUDENT",
+//   "state": "MAHARASHTRA",
+//   "annualIncome": 1
+// }
+
+export const setProfile = async (req, res) => {
+  try {
+    const {
+      phone,
+      dob,
+      preferredLanguage,
+      category,
+      state,
+      annualIncome,
+    } = req.body;
+
+    const data = {
+      phone,
+      preferredLanguage,
+      category,
+      state,
+      userId: req.user.id,
+    };
+
+    // Handle DOB
+    if (dob) {
+      const parsedDate = new Date(dob);
+
+      if (!isNaN(parsedDate.getTime())) {
+        data.dob = parsedDate;
+      }
+    }
+
+    // Handle annualIncome
+    if (annualIncome !== undefined && annualIncome !== null) {
+      if (typeof annualIncome === "string") {
+        const incomeMap = {
+          "Below 2.5L": 1,
+          "2.5L-5L": 2,
+          "5L-10L": 3,
+          "Above 10L": 4,
+        };
+
+        if (incomeMap[annualIncome] !== undefined) {
+          data.annualIncome = incomeMap[annualIncome];
+        } else if (!isNaN(Number(annualIncome))) {
+          data.annualIncome = parseInt(annualIncome, 10);
+        }
+      } else {
+        data.annualIncome = annualIncome;
+      }
+    }
+
+    const profile = await prisma.profile.upsert({
+      where: {
+        userId: req.user.id,
+      },
+      update: {
+        phone: data.phone,
+        dob: data.dob,
+        preferredLanguage: data.preferredLanguage,
+        category: data.category,
+        state: data.state,
+        annualIncome: data.annualIncome,
+      },
+      create: data,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile saved successfully",
+      profile,
+    });
+  } catch (error) {
+    console.log("FULL ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to save profile",
+      error: error.message,
+    });
+  }
+};
