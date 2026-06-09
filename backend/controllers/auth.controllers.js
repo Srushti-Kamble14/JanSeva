@@ -204,3 +204,34 @@ export const setProfile = async (req, res) => {
     });
   }
 };
+
+export const getProfile=async(req,res)=>{
+  try {
+
+    const profile = await prisma.profile.findUnique(
+      {
+        where : {
+          userId : req.user.id,
+        },
+        include:{
+          user:{
+            select:{
+              fullName:true,
+              email:true,
+            }
+          }
+        }
+      }
+    )
+
+
+    if(!profile){
+      return res.status(404).json({message:"Profile not found"})
+    }
+
+    return res.status(200).json({message:"Profile fetched successfully", success:true,profile});
+    
+  } catch (error) {
+   return res.status(500).json({message:"Failed to fetch profile",error:error.message}); 
+  }
+}
