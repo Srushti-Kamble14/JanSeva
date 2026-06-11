@@ -127,7 +127,7 @@ export default function ProfilePage() {
         preferredLanguage: data.language.toUpperCase(),
         category: data.category.toUpperCase().replace(/\s+/g, "_"),
         state: data.state.toUpperCase().replace(/\s+/g, "_"),
-        annualIncome: incomeMap[data.income],
+       annualIncome: Number(data.income),
       };
 
       await axios.post("http://localhost:5000/api/users/profile", payload, {
@@ -169,9 +169,12 @@ export default function ProfilePage() {
           className={`btn-gold !py-2.5 !px-6 text-sm font-semibold cursor-pointer shadow-md ${
             savedStatus ? "opacity-80" : ""
           }`}
+
+          
         >
           {/* {savedStatus ? "Saved ✓" : "Save Changes"} */}
           {isSaving ? "Saving..." : savedStatus ? "✅ Saved" : "Saved Changes"}
+         
         </button>
       </div>
 
@@ -264,12 +267,12 @@ export default function ProfilePage() {
               Preferred Language
             </label>
             <select className="input cursor-pointer" {...register("language")}>
-               <option value="ENGLISH">English</option>
-  <option value="HINDI">Hindi</option>
-  <option value="MARATHI">Marathi</option>
-  <option value="TAMIL">Tamil</option>
-  <option value="TELUGU">Telugu</option>
-  <option value="BENGALI">Bengali</option>
+              <option value="ENGLISH">English</option>
+              <option value="HINDI">Hindi</option>
+              <option value="MARATHI">Marathi</option>
+              <option value="TAMIL">Tamil</option>
+              <option value="TELUGU">Telugu</option>
+              <option value="BENGALI">Bengali</option>
             </select>
           </div>
 

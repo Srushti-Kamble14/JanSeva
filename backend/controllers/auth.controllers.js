@@ -164,9 +164,8 @@ export const setProfile = async (req, res) => {
           "Above 10L": 4,
         };
 
-        if (incomeMap[annualIncome] !== undefined) {
-          data.annualIncome = incomeMap[annualIncome];
-        } else if (!isNaN(Number(annualIncome))) {
+        
+        if (!isNaN(Number(annualIncome))) {
           data.annualIncome = parseInt(annualIncome, 10);
         }
       } else {

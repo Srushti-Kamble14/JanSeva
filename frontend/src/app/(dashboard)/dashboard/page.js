@@ -1,41 +1,107 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { useApp } from '@/context/AppContext'
-
+import Link from "next/link";
+import { useApp } from "@/context/AppContext";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
 const RECOMMENDED = [
-  { icon: '🎓', title: 'PM Scholarship Scheme', cat: 'Education • Central', tag: 'Eligible' },
-  { icon: '💰', title: 'Startup India Seed Fund', cat: 'Startup • DPIIT', tag: 'New' },
-  { icon: '🏥', title: 'Ayushman Bharat', cat: 'Healthcare • Central', tag: 'Eligible' },
-]
+  {
+    icon: "🎓",
+    title: "PM Scholarship Scheme",
+    cat: "Education • Central",
+    tag: "Eligible",
+  },
+  {
+    icon: "💰",
+    title: "Startup India Seed Fund",
+    cat: "Startup • DPIIT",
+    tag: "New",
+  },
+  {
+    icon: "🏥",
+    title: "Ayushman Bharat",
+    cat: "Healthcare • Central",
+    tag: "Eligible",
+  },
+];
 
 const NOTIFS = [
-  { text: 'New scholarship scheme added for engineering students', time: '2 hours ago', unread: true },
-  { text: 'PM Kisan Samman deadline extended to June 30', time: 'Yesterday', unread: true },
-  { text: 'Your Startup India application is under review', time: '2 days ago', unread: false },
-  { text: 'Profile 80% complete — add your income details', time: '3 days ago', unread: false },
-]
+  {
+    text: "New scholarship scheme added for engineering students",
+    time: "2 hours ago",
+    unread: true,
+  },
+  {
+    text: "PM Kisan Samman deadline extended to June 30",
+    time: "Yesterday",
+    unread: true,
+  },
+  {
+    text: "Your Startup India application is under review",
+    time: "2 days ago",
+    unread: false,
+  },
+  {
+    text: "Profile 80% complete — add your income details",
+    time: "3 days ago",
+    unread: false,
+  },
+];
 
 export default function DashboardPage() {
-  const { user, savedSchemes } = useApp()
-  const name = user?.name?.split(' ')[0] || user?.firstName || 'Citizen'
+  const { user, savedSchemes } = useApp();
+  const [profile, setProfile] = useState(null);
+ const name =
+  profile?.user?.fullName?.split(" ")[0] || "Citizen";
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const res = await axios.get("http://localhost:5000/api/users/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Token:", token);
+        setProfile(res.data.profile);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
     <div className="space-y-8 font-sans">
       <div className="mb-6">
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-1.5">Good morning, {name} ☀️</h2>
-        <p className="text-sm text-[#A89060]">You have 3 new scheme recommendations based on your profile.</p>
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-1.5">
+          Good morning, {name} ☀️
+        </h2>
+        <p className="text-sm text-[#A89060]">
+          You have 3 new scheme recommendations based on your profile.
+        </p>
       </div>
 
       {/* Metrics Section */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Saved Schemes', value: savedSchemes.length, sub: '↑ 3 this week' },
-          { label: 'AI Chats', value: 47, sub: 'Past 30 days' },
-          { label: 'Applied', value: 3, sub: 'Awaiting response' },
-          { label: 'Matched', value: 28, sub: 'Eligible schemes' },
-        ].map(m => (
-          <div key={m.label} className="metric-card shadow-sm border border-[rgba(212,160,23,0.18)]">
+          {
+            label: "Saved Schemes",
+            value: savedSchemes.length,
+            sub: "↑ 3 this week",
+          },
+          { label: "AI Chats", value: 47, sub: "Past 30 days" },
+          { label: "Applied", value: 3, sub: "Awaiting response" },
+          { label: "Matched", value: 28, sub: "Eligible schemes" },
+        ].map((m) => (
+          <div
+            key={m.label}
+            className="metric-card shadow-sm border border-[rgba(212,160,23,0.18)]"
+          >
             <div className="metric-label">{m.label}</div>
             <div className="metric-value">{m.value}</div>
             <div className="metric-sub">{m.sub}</div>
@@ -48,23 +114,32 @@ export default function DashboardPage() {
         {/* Recommended Schemes */}
         <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">Recommended Schemes</h3>
-            <Link href="/schemes" className="text-xs font-semibold text-[#D4A017] hover:underline">
+            <h3 className="font-serif text-lg font-semibold text-white">
+              Recommended Schemes
+            </h3>
+            <Link
+              href="/schemes"
+              className="text-xs font-semibold text-[#D4A017] hover:underline"
+            >
               View all →
             </Link>
           </div>
           <div className="space-y-3">
             {RECOMMENDED.map((r, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-xl">
                   {r.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-bold text-[#F0E6C8] truncate">{r.title}</div>
-                  <div className="text-[10px] text-[#A89060] truncate">{r.cat}</div>
+                  <div className="text-xs font-bold text-[#F0E6C8] truncate">
+                    {r.title}
+                  </div>
+                  <div className="text-[10px] text-[#A89060] truncate">
+                    {r.cat}
+                  </div>
                 </div>
                 <span className="px-2 py-0.5 rounded bg-[rgba(212,160,23,0.08)] border border-[rgba(212,160,23,0.15)] text-[9px] text-[#F2C94C] font-semibold">
                   {r.tag}
@@ -77,18 +152,27 @@ export default function DashboardPage() {
         {/* Notifications */}
         <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">Notifications</h3>
+            <h3 className="font-serif text-lg font-semibold text-white">
+              Notifications
+            </h3>
             <span className="px-2.5 py-0.5 rounded-full bg-[rgba(212,160,23,0.1)] text-[#D4A017] text-[10px] font-bold">
               4 new
             </span>
           </div>
           <div className="space-y-3 max-h-[200px] overflow-y-auto pr-1">
             {NOTIFS.map((n, i) => (
-              <div key={i} className="flex items-start gap-3 text-xs leading-relaxed">
-                <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${n.unread ? 'bg-[#D4A017]' : 'bg-transparent'}`} />
+              <div
+                key={i}
+                className="flex items-start gap-3 text-xs leading-relaxed"
+              >
+                <div
+                  className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${n.unread ? "bg-[#D4A017]" : "bg-transparent"}`}
+                />
                 <div className="flex-1">
                   <div className="text-[#F0E6C8] font-medium">{n.text}</div>
-                  <div className="text-[10px] text-[#6B5A3A] mt-0.5">{n.time}</div>
+                  <div className="text-[10px] text-[#6B5A3A] mt-0.5">
+                    {n.time}
+                  </div>
                 </div>
               </div>
             ))}
@@ -98,27 +182,43 @@ export default function DashboardPage() {
         {/* Recent Chats */}
         <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">Recent AI Chats</h3>
-            <Link href="/chat" className="text-xs font-semibold text-[#D4A017] hover:underline">
+            <h3 className="font-serif text-lg font-semibold text-white">
+              Recent AI Chats
+            </h3>
+            <Link
+              href="/chat"
+              className="text-xs font-semibold text-[#D4A017] hover:underline"
+            >
               Open chat →
             </Link>
           </div>
           <div className="space-y-3">
             {[
-              { q: 'Scholarships for B.Tech students', when: 'Today, 9:30 AM · 5 messages' },
-              { q: 'PM Kisan eligibility criteria', when: 'Yesterday · 12 messages' },
-              { q: 'Women entrepreneurship schemes', when: '2 days ago · 8 messages' },
-            ].map(c => (
-              <Link 
-                key={c.q} 
-                href="/chat" 
+              {
+                q: "Scholarships for B.Tech students",
+                when: "Today, 9:30 AM · 5 messages",
+              },
+              {
+                q: "PM Kisan eligibility criteria",
+                when: "Yesterday · 12 messages",
+              },
+              {
+                q: "Women entrepreneurship schemes",
+                when: "2 days ago · 8 messages",
+              },
+            ].map((c) => (
+              <Link
+                key={c.q}
+                href="/chat"
                 className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
               >
                 <div className="w-9 h-9 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-base">
                   💬
                 </div>
                 <div className="min-w-0">
-                  <div className="text-xs font-bold text-[#F0E6C8] truncate">{c.q}</div>
+                  <div className="text-xs font-bold text-[#F0E6C8] truncate">
+                    {c.q}
+                  </div>
                   <div className="text-[10px] text-[#A89060]">{c.when}</div>
                 </div>
               </Link>
@@ -129,23 +229,35 @@ export default function DashboardPage() {
         {/* Profile summary card */}
         <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">Profile Summary</h3>
-            <Link href="/profile" className="text-xs font-semibold text-[#D4A017] hover:underline">
+            <h3 className="font-serif text-lg font-semibold text-white">
+              Profile Summary
+            </h3>
+            <Link
+              href="/profile"
+              className="text-xs font-semibold text-[#D4A017] hover:underline"
+            >
               Edit →
             </Link>
           </div>
           <div className="space-y-2 mb-4">
             {[
-              { k: 'Name', v: user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Arjun Sharma' },
-              { k: 'Email', v: user?.email || 'arjun@gmail.com' },
-              { k: 'Language', v: user?.language || 'English' },
-              { k: 'Category', v: user?.category || 'Student' },
-              { k: 'State', v: user?.state || 'Maharashtra' },
-              { k: 'Saved Schemes', v: savedSchemes.length, gold: true },
-            ].map(r => (
-              <div key={r.k} className="flex justify-between items-center text-xs leading-none py-1 border-b border-white/[0.02] last:border-0">
+              { k: "Name", v: profile?.user?.fullName || "-" },
+              { k: "Email", v: profile?.user?.email || "-" },
+              { k: "Language", v: profile?.preferredLanguage || "-" },
+              { k: "Category", v: profile?.category || "-" },
+              { k: "State", v: profile?.state || "-" },
+              { k: "Saved Schemes", v: savedSchemes.length, gold: true },
+            ].map((r) => (
+              <div
+                key={r.k}
+                className="flex justify-between items-center text-xs leading-none py-1 border-b border-white/[0.02] last:border-0"
+              >
                 <span className="text-[#A89060]">{r.k}</span>
-                <span className={`font-semibold ${r.gold ? 'text-[#F2C94C]' : 'text-[#F0E6C8]'}`}>{r.v}</span>
+                <span
+                  className={`font-semibold ${r.gold ? "text-[#F2C94C]" : "text-[#F0E6C8]"}`}
+                >
+                  {r.v}
+                </span>
               </div>
             ))}
           </div>
@@ -155,11 +267,14 @@ export default function DashboardPage() {
               <span>80%</span>
             </div>
             <div className="w-full h-1.5 bg-black/40 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-[#D4A017] to-[#F2C94C] rounded-full" style={{ width: '80%' }} />
+              <div
+                className="h-full bg-gradient-to-r from-[#D4A017] to-[#F2C94C] rounded-full"
+                style={{ width: "80%" }}
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
