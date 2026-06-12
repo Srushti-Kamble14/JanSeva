@@ -5,53 +5,13 @@ import { useApp } from "@/context/AppContext";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-const RECOMMENDED = [
-  {
-    icon: "🎓",
-    title: "PM Scholarship Scheme",
-    cat: "Education • Central",
-    tag: "Eligible",
-  },
-  {
-    icon: "💰",
-    title: "Startup India Seed Fund",
-    cat: "Startup • DPIIT",
-    tag: "New",
-  },
-  {
-    icon: "🏥",
-    title: "Ayushman Bharat",
-    cat: "Healthcare • Central",
-    tag: "Eligible",
-  },
-];
 
-const NOTIFS = [
-  {
-    text: "New scholarship scheme added for engineering students",
-    time: "2 hours ago",
-    unread: true,
-  },
-  {
-    text: "PM Kisan Samman deadline extended to June 30",
-    time: "Yesterday",
-    unread: true,
-  },
-  {
-    text: "Your Startup India application is under review",
-    time: "2 days ago",
-    unread: false,
-  },
-  {
-    text: "Profile 80% complete — add your income details",
-    time: "3 days ago",
-    unread: false,
-  },
-];
 
 export default function DashboardPage() {
   const { user, savedSchemes } = useApp();
   const [profile, setProfile] = useState(null);
+  const [recommendedSchemes, setRecommendedSchemes] = useState([]);
+  const [notifications, setNotifications] = useState([]);
  const name =
   profile?.user?.fullName?.split(" ")[0] || "Citizen";
 
@@ -67,10 +27,33 @@ export default function DashboardPage() {
         });
         console.log("Token:", token);
         setProfile(res.data.profile);
+
+
+        const schemesRes = await axios.get(
+  "http://localhost:5000/api/schemes"
+);
+
+const allSchemes =
+  schemesRes.data.data.data.hits.items;
+
+setRecommendedSchemes(
+  allSchemes.slice(0, 5)
+);
+
+setNotifications(
+  allSchemes.slice(0, 4).map((scheme) => ({
+    text: `${scheme.fields.schemeName} may be relevant to you`,
+    time: "Just now",
+    unread: true,
+    slug: scheme.fields.slug,
+  }))
+);
       } catch (error) {
         console.error(error);
       }
     };
+
+
 
     fetchProfile();
   }, []);
@@ -125,26 +108,29 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="space-y-3">
-            {RECOMMENDED.map((r, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-xl">
-                  {r.icon}
+           {recommendedSchemes.map((scheme) => (
+             <a
+  key={scheme.id}
+  href={`https://www.myscheme.gov.in/schemes/${scheme.fields.slug}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
+>
+                <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-[20px]">
+                  📋
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-bold text-[#F0E6C8] truncate">
-                    {r.title}
+                   {scheme.fields.schemeName}
                   </div>
                   <div className="text-[10px] text-[#A89060] truncate">
-                    {r.cat}
+                   {scheme.fields.level}
                   </div>
                 </div>
                 <span className="px-2 py-0.5 rounded bg-[rgba(212,160,23,0.08)] border border-[rgba(212,160,23,0.15)] text-[9px] text-[#F2C94C] font-semibold">
-                  {r.tag}
+                  Recommended
                 </span>
-              </div>
+             </a>
             ))}
           </div>
         </div>
@@ -156,15 +142,18 @@ export default function DashboardPage() {
               Notifications
             </h3>
             <span className="px-2.5 py-0.5 rounded-full bg-[rgba(212,160,23,0.1)] text-[#D4A017] text-[10px] font-bold">
-              4 new
+             {notifications.length} new
             </span>
           </div>
           <div className="space-y-3 max-h-[200px] overflow-y-auto pr-1">
-            {NOTIFS.map((n, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 text-xs leading-relaxed"
-              >
+           {notifications.map((n, i) => (
+             <a
+  key={i}
+  href={`https://www.myscheme.gov.in/schemes/${n.slug}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-start gap-3 text-xs leading-relaxed hover:bg-[rgba(212,160,23,0.03)] p-2 rounded-lg transition-colors"
+>
                 <div
                   className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${n.unread ? "bg-[#D4A017]" : "bg-transparent"}`}
                 />
@@ -174,7 +163,7 @@ export default function DashboardPage() {
                     {n.time}
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
