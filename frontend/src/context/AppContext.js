@@ -9,7 +9,7 @@ export function AppProvider({ children }) {
   const [theme, setTheme] = useState('dark')
   const [language, setLanguage] = useState('English')
   const [user, setUser] = useState(null)
-  const [savedSchemes, setSavedSchemes] = useState([1, 3])
+  const [savedSchemes, setSavedSchemes] = useState([])
 
 
   const fetchProfile = async () => {
@@ -39,11 +39,22 @@ export function AppProvider({ children }) {
 
 
   useEffect(() => {
-  const savedTheme = localStorage.getItem('theme')
+  const saved = localStorage.getItem("savedSchemes");
 
-  if (savedTheme) {
-    setTheme(savedTheme)
-  }
+if (saved) {
+  const parsed = JSON.parse(saved);
+
+  const cleaned = parsed.filter(
+    id => typeof id === "string"
+  );
+
+  setSavedSchemes(cleaned);
+
+  localStorage.setItem(
+    "savedSchemes",
+    JSON.stringify(cleaned)
+  );
+}
 
   fetchProfile()
 }, [])
@@ -59,11 +70,18 @@ export function AppProvider({ children }) {
 
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
 
-  const toggleSave = (id) => {
-    setSavedSchemes(prev =>
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
-    )
-  }
+ const toggleSave = (id) => {
+  const updated = savedSchemes.includes(id)
+    ? savedSchemes.filter(s => s !== id)
+    : [...savedSchemes, id];
+
+  setSavedSchemes(updated);
+
+  localStorage.setItem(
+    "savedSchemes",
+    JSON.stringify(updated)
+  );
+};
 
   const login = (userData) => {
     setUser(userData)
@@ -76,6 +94,8 @@ export function AppProvider({ children }) {
     localStorage.removeItem('user')
   }
 
+  console.log("savedSchemes:", savedSchemes);
+console.log("count:", savedSchemes.length);
   return (
   <AppContext.Provider value={{
   theme,

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
 import { useApp } from "@/context/AppContext";
-import { SCHEMES, LANGUAGES } from "@/utils/data";
+
 
 // Profile Form Validation Schema
 const profileSchema = z.object({
@@ -31,6 +31,30 @@ export default function ProfilePage() {
   const [savedStatus, setSavedStatus] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [savedList, setSavedList] = useState([]);
+
+  const fetchSavedSchemes = async () => {
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/schemes"
+    );
+
+    const allSchemes =
+      res.data.data.data.hits.items;
+
+    const filtered = allSchemes.filter(
+      (scheme) => savedSchemes.includes(scheme.id)
+    );
+
+    setSavedList(filtered);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {
+  fetchSavedSchemes();
+}, [savedSchemes]);
 
   const initialName =
     user?.fullName ||
@@ -105,7 +129,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
-  const savedList = SCHEMES.filter((s) => savedSchemes.includes(s.id));
+  
 
   const onSubmit = async (data) => {
     try {
@@ -340,7 +364,7 @@ export default function ProfilePage() {
                 <div>
                   <div className="flex items-start justify-between mb-3">
                     <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-xl">
-                      {s.icon}
+                     🛡️
                     </div>
                     <button
                       className="text-[#D4A017] text-lg active:scale-95 cursor-pointer"
@@ -351,13 +375,14 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-1">
-                    {s.category}
+                    {s.fields.level}
                   </div>
                   <h4 className="font-serif text-sm font-semibold text-white mb-1.5 leading-snug">
-                    {s.title}
+                    {s.fields.schemeName
+}
                   </h4>
                   <p className="text-xs text-[#A89060] line-clamp-2 mb-4 leading-relaxed">
-                    {s.description}
+                    {s.fields.briefDescription}
                   </p>
                 </div>
 
@@ -365,12 +390,13 @@ export default function ProfilePage() {
                   <span className="text-[11px] text-[#6B5A3A]">
                     👤 {s.eligibility}
                   </span>
-                  <Link
-                    href={`/schemes/${s.id}`}
-                    className="text-[11px] font-semibold text-[#D4A017] hover:underline"
-                  >
+                  <a
+  href={`https://www.myscheme.gov.in/schemes/${s.fields.slug}`}
+  target="_blank"
+  rel="noopener noreferrer"
+>
                     View Details →
-                  </Link>
+                  </a>
                 </div>
               </div>
             ))}
