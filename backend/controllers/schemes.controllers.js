@@ -1,4 +1,4 @@
-console.log("schemes controller loaded");
+// console.log("schemes controller loaded");
 import axios from "axios";
 
 export const getAllSchemes = async (req, res) => {

@@ -56,8 +56,8 @@ import app from "./app.js";
 import authRoutes from "./routes/auth.routes.js";
 import schemesRoutes from "./routes/schemes.routes.js";
 
-console.log("authRoutes:", authRoutes);
-console.log("schemesRoutes:", schemesRoutes);
+// console.log("authRoutes:", authRoutes);
+// console.log("schemesRoutes:", schemesRoutes);
 
 app.use("/api/users", authRoutes);
 app.use("/api/schemes", schemesRoutes);

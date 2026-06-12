@@ -1,8 +1,9 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from 'react'
-
+import axios from 'axios'
 const AppContext = createContext(null)
+
 
 export function AppProvider({ children }) {
   const [theme, setTheme] = useState('dark')
@@ -10,20 +11,42 @@ export function AppProvider({ children }) {
   const [user, setUser] = useState(null)
   const [savedSchemes, setSavedSchemes] = useState([1, 3])
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      setTheme(savedTheme)
-    }
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser))
-      } catch (e) {
-        console.error(e)
+
+  const fetchProfile = async () => {
+  try {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) return;
+
+    const res = await axios.get(
+      "http://localhost:5000/api/users/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    }
-  }, [])
+    );
+
+    setUser({
+      fullName: res.data.profile.user.fullName,
+      email: res.data.profile.user.email,
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+  useEffect(() => {
+  const savedTheme = localStorage.getItem('theme')
+
+  if (savedTheme) {
+    setTheme(savedTheme)
+  }
+
+  fetchProfile()
+}, [])
 
   useEffect(() => {
     if (theme === 'light') {
@@ -54,12 +77,19 @@ export function AppProvider({ children }) {
   }
 
   return (
-    <AppContext.Provider value={{
-      theme, toggleTheme,
-      language, setLanguage,
-      user, login, logout,
-      savedSchemes, toggleSave,
-    }}>
+  <AppContext.Provider value={{
+  theme,
+  toggleTheme,
+  language,
+  setLanguage,
+  user,
+  setUser,
+  fetchProfile,
+  login,
+  logout,
+  savedSchemes,
+  toggleSave,
+}}>
       {children}
     </AppContext.Provider>
   )
