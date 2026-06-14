@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useChat } from '@/hooks/useChat'
 import { useApp } from '@/context/AppContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import axios from "axios";
 
 const SUGGESTED = [
   '🎓 Scholarships for students',
@@ -15,7 +16,14 @@ const SUGGESTED = [
 ]
 
 export default function ChatPage() {
-  const { messages, typing, send, clear } = useChat()
+ const {
+  messages,
+  typing,
+  setTyping,
+  addUserMessage,
+  addAssistantMessage,
+  clear,
+} = useChat();
   const { theme } = useApp()
   const [input, setInput] = useState('')
   const [micActive, setMicActive] = useState(false)
@@ -26,32 +34,63 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
 
-  const handleSend = () => {
-    const text = input.trim()
-    if (!text) return
-    send(text)
-    setInput('')
+ const handleSend = async (customText = null) => {
+  const text = customText || input.trim();
+
+  if (!text) return;
+
+  addUserMessage(text);
+
+  if (!customText) {
+    setInput("");
   }
 
+  setTyping(true);
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/ai/chat",
+      {
+        message: text,
+      }
+    );
+
+    addAssistantMessage(
+      res.data.reply,
+      res.data.schemes
+    );
+  } catch (error) {
+    console.log(error);
+
+    addAssistantMessage(
+      "Something went wrong while fetching AI response."
+    );
+  } finally {
+    setTyping(false);
+  }
+};
   const handleKey = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) { 
       e.preventDefault()
       handleSend() 
     }
   }
+const handleSuggested = (s) => {
+  const text = s.replace(/^[^\w]+/, "").trim();
+  handleSend(text);
+};
 
-  const handleSuggested = (s) => {
-    const text = s.replace(/^[^\w]+/, '').trim()
-    send(text)
-  }
+ const toggleMic = () => {
+  setMicActive(true);
 
-  const toggleMic = () => {
-    setMicActive(true)
-    setTimeout(() => {
-      setMicActive(false)
-      send('What scholarships are available for engineering students?')
-    }, 2500)
-  }
+  setTimeout(() => {
+    setMicActive(false);
+
+    handleSend(
+      "What scholarships are available for engineering students?"
+    );
+  }, 2500);
+};
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-112px)] font-sans">
@@ -142,6 +181,34 @@ export default function ChatPage() {
                       : 'bg-[#1A1A1A] border border-[rgba(212,160,23,0.1)] text-[#F0E6C8] rounded-tl-none'
                   }`}>
                     <div className="whitespace-pre-line">{m.text}</div>
+
+                    {m.schemes?.length > 0 && (
+  <div className="mt-3 space-y-2">
+    {m.schemes.map((scheme) => (
+      <div
+        key={scheme.id}
+        className="p-3 rounded-xl bg-black/40 border border-[rgba(212,160,23,0.15)]"
+      >
+        <div className="text-xs font-bold text-[#F2C94C]">
+          {scheme.name}
+        </div>
+
+        <div className="text-[11px] text-[#A89060] mt-1">
+          {scheme.description}
+        </div>
+
+        <a
+          href={`https://www.myscheme.gov.in/schemes/${scheme.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-2 text-[11px] font-semibold text-[#D4A017]"
+        >
+          View Scheme →
+        </a>
+      </div>
+    ))}
+  </div>
+)}
                     
                     {m.card && (
                       <div className="mt-3 p-3 rounded-xl bg-black/40 border border-[rgba(212,160,23,0.18)] flex flex-col gap-2">
@@ -152,7 +219,7 @@ export default function ChatPage() {
                     )}
                   </div>
                   <div className={`text-[9px] text-[#A89060] mt-1 ${m.role === 'user' ? 'text-right' : 'text-left'}`}>
-                    {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                   {m.time}
                   </div>
                 </div>
               </motion.div>

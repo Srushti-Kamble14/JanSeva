@@ -1,17 +1,24 @@
-import express from "express";
+import Groq from "groq-sdk";
+import dotenv from "dotenv";
 
-const app = express();
+dotenv.config();
 
-app.get("/", (req, res) => {
-  res.send("TEST SERVER");
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-app.get("/api/test", (req, res) => {
-  res.json({
-    message: "HELLO SRUSHTI"
+async function test() {
+  const completion = await groq.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+    messages: [
+      {
+        role: "user",
+        content: "Hello",
+      },
+    ],
   });
-});
 
-app.listen(5000, () => {
-  console.log("TEST SERVER RUNNING");
-});
+  console.log(completion.choices[0].message.content);
+}
+
+test();

@@ -55,12 +55,14 @@ dotenv.config();
 import app from "./app.js";
 import authRoutes from "./routes/auth.routes.js";
 import schemesRoutes from "./routes/schemes.routes.js";
+import aiRoutes from "./routes/ai.routes.js"
 
 // console.log("authRoutes:", authRoutes);
 // console.log("schemesRoutes:", schemesRoutes);
 
 app.use("/api/users", authRoutes);
 app.use("/api/schemes", schemesRoutes);
+app.use("/api/ai",aiRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on 5000");
