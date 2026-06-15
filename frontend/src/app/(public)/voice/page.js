@@ -15,20 +15,52 @@ const QUICK = [
 export default function VoicePage() {
   const [state, setState] = useState('idle') // idle | listening | processing
   const { theme } = useApp()
+  const [transcript, setTranscript] = useState("");
   const router = useRouter()
 
-  const toggle = () => {
-    if (state === 'idle') {
-      setState('listening')
-      setTimeout(() => {
-        setState('processing')
-        setTimeout(() => {
-          setState('idle')
-          router.push('/chat')
-        }, 1500)
-      }, 3000)
-    }
+ const toggle = () => {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    return;
   }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  setState("listening");
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+
+    setTranscript(text);
+
+    setState("processing");
+
+    localStorage.setItem("voiceQuery", text);
+
+    setTimeout(() => {
+      router.push("/chat");
+    }, 1000);
+  };
+
+  recognition.onerror = (event) => {
+    console.log(event.error);
+    setState("idle");
+  };
+
+  recognition.onend = () => {
+    setState("idle");
+  };
+
+  recognition.start();
+};
 
   const handleQuick = (q) => {
     setState('processing')
@@ -91,6 +123,12 @@ export default function VoicePage() {
         {state === 'listening' && 'Listening...'}
         {state === 'processing' && 'Processing audio...'}
       </div>
+
+      {transcript && (
+  <div className="mt-4 text-[#F2C94C] text-sm">
+    You said: "{transcript}"
+  </div>
+)}
 
       {/* Audio Wave Visualizer */}
       <div className={`h-10 flex items-center justify-center gap-1 mb-12 transition-opacity duration-300 ${state === 'listening' ? 'opacity-100' : 'opacity-0'}`}>

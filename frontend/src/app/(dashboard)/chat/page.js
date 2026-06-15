@@ -43,6 +43,17 @@ export default function ChatPage() {
   }
 }, []);
 
+useEffect(() => {
+  const voiceQuery =
+    localStorage.getItem("voiceQuery");
+
+  if (voiceQuery) {
+    handleSend(voiceQuery);
+
+    localStorage.removeItem("voiceQuery");
+  }
+}, []);
+
  const handleSend = async (customText = null) => {
   const text = customText || input.trim();
 
