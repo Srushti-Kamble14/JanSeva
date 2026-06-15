@@ -27,6 +27,7 @@ export default function ChatPage() {
   const { theme } = useApp()
   const [input, setInput] = useState('')
   const [micActive, setMicActive] = useState(false)
+  const [history, setHistory] = useState([]);
   const messagesEndRef = useRef(null)
   const router = useRouter()
 
@@ -34,12 +35,33 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
 
+  useEffect(() => {
+  const savedHistory = localStorage.getItem("chatHistory");
+
+  if (savedHistory) {
+    setHistory(JSON.parse(savedHistory));
+  }
+}, []);
+
  const handleSend = async (customText = null) => {
   const text = customText || input.trim();
 
   if (!text) return;
 
   addUserMessage(text);
+
+  const updatedHistory = [
+  text,
+  ...history.filter((h) => h !== text),
+].slice(0, 10);
+
+setHistory(updatedHistory);
+
+localStorage.setItem(
+  "chatHistory",
+  JSON.stringify(updatedHistory)
+);
+  
 
   if (!customText) {
     setInput("");
@@ -103,21 +125,31 @@ const handleSuggested = (s) => {
         <h3 className="font-serif text-lg font-bold text-[#F2C94C] mb-4">AI Assistant</h3>
         <button 
           className="btn-gold !py-2.5 !w-full text-xs font-semibold mb-6 shadow-md cursor-pointer"
-          onClick={clear}
+         onClick={() => {
+  clear();
+  setHistory([]);
+  localStorage.removeItem("chatHistory");
+}}
         >
           + New Chat
         </button>
 
         <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-2">History</div>
         <div className="flex-1 overflow-y-auto space-y-2 mb-6 max-h-[160px] lg:max-h-none">
-          {['Scholarships for B.Tech students', 'PM Kisan eligibility criteria', 'Women entrepreneurship schemes'].map((h, i) => (
-            <div 
-              key={i} 
-              className="p-2.5 rounded-lg bg-white/[0.02] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.04)] cursor-pointer transition-colors"
-            >
-              <p className="text-xs font-semibold truncate text-[#F0E6C8]">{h}</p>
-              <span className="text-[9px] text-[#A89060]">Today</span>
-            </div>
+         {history.map((h, i) => (
+           <div
+  key={i}
+  onClick={() => handleSend(h)}
+  className="p-2.5 rounded-lg bg-white/[0.02] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.04)] cursor-pointer transition-colors"
+>
+  <p className="text-xs font-semibold truncate text-[#F0E6C8]">
+    {h}
+  </p>
+
+  <span className="text-[9px] text-[#A89060]">
+    Previous Search
+  </span>
+</div>
           ))}
         </div>
 
