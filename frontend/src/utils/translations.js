@@ -11,6 +11,13 @@ export const translations = {
     login: "Log In",
     logout: "Log Out",
     getStarted: "Get Started",
+    main: "Main",
+    account: "Account",
+    saved: "Saved",
+    aiAssistant: "AI Assistant",
+    voiceAssistant: "Voice Assistant",
+    allSchemes: "All Schemes",
+    adminPanel: "Admin Panel",
   },
 
   hi: {
@@ -25,6 +32,13 @@ export const translations = {
     login: "लॉग इन",
     logout: "लॉग आउट",
     getStarted: "शुरू करें",
+    main: "मुख्य",
+    account: "खाता",
+    saved: "सहेजा गया",
+    aiAssistant: "एआई सहायक",
+    voiceAssistant: "वॉइस असिस्टेंट",
+    allSchemes: "सभी योजनाएं",
+    adminPanel: "एडमिन पैनल",
   },
 
   mr: {
@@ -39,6 +53,13 @@ export const translations = {
     login: "लॉग इन",
     logout: "लॉग आउट",
     getStarted: "सुरू करा",
+    main: "मुख्य",
+    account: "खाते",
+    saved: "जतन केलेले",
+    aiAssistant: "एआय सहाय्यक",
+    voiceAssistant: "व्हॉइस सहाय्यक",
+    allSchemes: "सर्व योजना",
+    adminPanel: "अॅडमिन पॅनेल",
   },
 
   ta: {
@@ -53,6 +74,13 @@ export const translations = {
     login: "உள்நுழை",
     logout: "வெளியேறு",
     getStarted: "தொடங்கு",
+    main: "முக்கிய",
+    account: "கணக்கு",
+    saved: "சேமிக்கப்பட்டது",
+    aiAssistant: "ஏஐ உதவியாளர்",
+    voiceAssistant: "குரல் உதவியாளர்",
+    allSchemes: "அனைத்து திட்டங்கள்",
+    adminPanel: "அதிகாரி பலகை",
   },
 
   te: {
@@ -67,6 +95,13 @@ export const translations = {
     login: "లాగిన్",
     logout: "లాగ్ అవుట్",
     getStarted: "ప్రారంభించండి",
+    main: "ప్రధాన",
+    account: "ఖాతా",
+    saved: "సేవ్ చేయబడింది",
+    aiAssistant: "ఏఐ సహాయకుడు",
+    voiceAssistant: "వాయిస్ సహాయకుడు",
+    allSchemes: "అన్ని పథకాలు",
+    adminPanel: "అడ్మిన్ ప్యానెల్",
   },
 
   bn: {
@@ -81,12 +116,19 @@ export const translations = {
     login: "লগ ইন",
     logout: "লগ আউট",
     getStarted: "শুরু করুন",
+    main: "প্রধান",
+    account: "অ্যাকাউন্ট",
+    saved: "সংরক্ষিত",
+    aiAssistant: "এআই সহকারী",
+    voiceAssistant: "ভয়েস সহকারী",
+    allSchemes: "সকল স্কিম",
+    adminPanel: "অ্যাডমিন প্যানেল",
   },
 
   gu: {
     home: "હોમ",
     schemes: "યોજનાઓ",
-    aiChat: "એઆઈ ચેટ",
+    aiChat: "એ આઈ ચેટ",
     voice: "વૉઇસ",
     dashboard: "ડેશબોર્ડ",
     profile: "પ્રોફાઇલ",
@@ -95,6 +137,13 @@ export const translations = {
     login: "લોગ ઇન",
     logout: "લોગ આઉટ",
     getStarted: "શરૂ કરો",
+    main: "મુખ્ય",
+    account: "ખાતું",
+    saved: "સાચવેલું",
+    aiAssistant: "એઆઈ સહાયક",
+    voiceAssistant: "વૉઇસ સહાયક",
+    allSchemes: "બધી યોજનાઓ",
+    adminPanel: "એડમિન પેનલ",
   },
 
   kn: {
@@ -109,6 +158,13 @@ export const translations = {
     login: "ಲಾಗಿನ್",
     logout: "ಲಾಗ್ ಔಟ್",
     getStarted: "ಪ್ರಾರಂಭಿಸಿ",
+    main: "ಮುಖ್ಯ",
+    account: "ಖಾತೆ",
+    saved: "ಉಳಿಸಲಾಗಿದೆ",
+    aiAssistant: "ಎಐ ಸಹಾಯಕ",
+    voiceAssistant: "ಧ್ವನಿ ಸಹಾಯಕ",
+    allSchemes: "ಎಲ್ಲಾ ಯೋಜನೆಗಳು",
+    adminPanel: "ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್",
   },
 
   ml: {
@@ -123,6 +179,13 @@ export const translations = {
     login: "ലോഗിൻ",
     logout: "ലോഗ് ഔട്ട്",
     getStarted: "തുടങ്ങുക",
+    main: "പ്രധാന",
+    account: "അക്കൗണ്ട്",
+    saved: "സംരക്ഷിച്ചത്",
+    aiAssistant: "എഐ സഹായി",
+    voiceAssistant: "വോയ്സ് സഹായി",
+    allSchemes: "എല്ലാ പദ്ധതി",
+    adminPanel: "അഡ്മിൻ പാനൽ",
   },
 
   pa: {
@@ -137,6 +200,13 @@ export const translations = {
     login: "ਲਾਗਇਨ",
     logout: "ਲਾਗਆਉਟ",
     getStarted: "ਸ਼ੁਰੂ ਕਰੋ",
+    main: "ਮੁੱਖ",
+    account: "ਖਾਤਾ",
+    saved: "ਸੰਭਾਲਿਆ",
+    aiAssistant: "ਏਆਈ ਸਹਾਇਕ",
+    voiceAssistant: "ਵੌਇਸ ਸਹਾਇਕ",
+    allSchemes: "ਸਭ ਸਕੀਮਾਂ",
+    adminPanel: "ਐਡਮਿਨ ਪੈਨਲ",
   },
 
   or: {
@@ -151,6 +221,13 @@ export const translations = {
     login: "ଲଗଇନ",
     logout: "ଲଗଆଉଟ",
     getStarted: "ଆରମ୍ଭ କରନ୍ତୁ",
+    main: "ମୂଖ୍ୟ",
+    account: "ଖାତା",
+    saved: "ସଞ୍ଚିତ",
+    aiAssistant: "ଏଆଇ ସହାୟକ",
+    voiceAssistant: "ଭଏସ ସହାୟକ",
+    allSchemes: "ସମସ୍ତ ଯୋଜନା",
+    adminPanel: "ଏଡମିନ ପ୍ୟାନେଲ୍",
   },
 
   ur: {
@@ -165,5 +242,12 @@ export const translations = {
     login: "لاگ ان",
     logout: "لاگ آؤٹ",
     getStarted: "شروع کریں",
+    main: "اہم",
+    account: "اکاؤنٹ",
+    saved: "محفوظ",
+    aiAssistant: "اے آئی اسسٹنٹ",
+    voiceAssistant: "وائس اسسٹنٹ",
+    allSchemes: "تمام اسکیمیں",
+    adminPanel: "ایڈمن پینل",
   },
 };

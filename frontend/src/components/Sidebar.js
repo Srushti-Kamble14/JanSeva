@@ -3,28 +3,30 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useApp } from "@/context/AppContext";
+import { translations } from "@/utils/translations";
 
-const NAV = [
-  { to: "/dashboard", icon: "🏠", label: "Dashboard", end: true },
-  { to: "/chat", icon: "💬", label: "AI Assistant", badge: 3 },
-  { to: "/schemes", icon: "📋", label: "All Schemes" },
-  { to: "/voice", icon: "🎙️", label: "Voice Assistant" },
-  {
-    to: "/bookmarks",
-    icon: "⭐",
-    label: "Saved Schemes",
-  },
+
+export default function Sidebar() {
+  const { logout, savedSchemes, user, theme,language } = useApp();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const t =
+  translations[language] ||
+  translations.en;
+
+  const NAV = [
+  { to: '/dashboard', icon: '🏠', label: t.dashboard },
+  { to: '/chat', icon: '💬', label: t.aiAssistant },
+  { to: '/schemes', icon: '📋', label: t.allSchemes },
+  { to: '/voice', icon: '🎙️', label: t.voiceAssistant },
+  { to: '/saved', icon: '⭐', label: t.savedSchemes },
 ];
 
 const ACCOUNT = [
-  { to: "/profile", icon: "👤", label: "Profile" },
-  { to: "/admin", icon: "⚙️", label: "Admin Panel" },
+  { to: '/profile', icon: '👤', label: t.profile },
+  { to: '/admin', icon: '⚙️', label: t.adminPanel },
 ];
-
-export default function Sidebar() {
-  const { logout, savedSchemes, user, theme } = useApp();
-  const pathname = usePathname();
-  const router = useRouter();
 
   const handleLogout = () => {
     logout();
@@ -60,7 +62,7 @@ export default function Sidebar() {
 
       {/* Main Items */}
       <div className="text-[11px] font-bold tracking-wider uppercase text-[#A89060] mb-2 px-2.5">
-        Main
+       {t.main}
       </div>
       <div className="space-y-1 mb-6">
         {NAV.map((l) => (
@@ -86,7 +88,7 @@ export default function Sidebar() {
 
       {/* Account Items */}
       <div className="text-[11px] font-bold tracking-wider uppercase text-[#A89060] mb-2 px-2.5">
-        Account
+       {t.account}
       </div>
       <div className="space-y-1 mb-6">
         {ACCOUNT.map((l) => (
@@ -107,11 +109,11 @@ export default function Sidebar() {
 
       {/* Saved Metrics */}
       <div className="text-[11px] font-bold tracking-wider uppercase text-[#A89060] mb-2 px-2.5">
-        Saved
+        {t.saved}
       </div>
       <div className="flex items-center gap-3 px-3 py-2.5 text-sm text-[#A89060]">
         <span className="text-base">⭐</span>
-        <span>{savedSchemes.length} Saved Schemes</span>
+        <span>{savedSchemes.length} {t.savedSchemes}</span>
       </div>
 
       <div className="flex-1" />
@@ -122,7 +124,7 @@ export default function Sidebar() {
         className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#A89060] hover:bg-red-500/10 hover:text-red-400 transition-colors w-full text-left font-sans cursor-pointer"
       >
         <span className="text-base">🚪</span>
-        <span>Log Out</span>
+        <span>{t.logout}</span>
       </button>
     </aside>
   );
