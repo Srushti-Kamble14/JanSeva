@@ -28,6 +28,7 @@ export default function ChatPage() {
   const [input, setInput] = useState('')
   const [micActive, setMicActive] = useState(false)
   const [history, setHistory] = useState([]);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
   const messagesEndRef = useRef(null)
   const router = useRouter()
 
@@ -55,6 +56,9 @@ useEffect(() => {
 }, []);
 
  const handleSend = async (customText = null) => {
+
+  window.speechSynthesis.cancel();
+
   const text = customText || input.trim();
 
   if (!text) return;
@@ -92,6 +96,9 @@ localStorage.setItem(
       res.data.reply,
       res.data.schemes
     );
+    if (voiceEnabled) {
+  speak(res.data.reply);
+}
   } catch (error) {
     console.log(error);
 
@@ -123,6 +130,28 @@ const handleSuggested = (s) => {
       "What scholarships are available for engineering students?"
     );
   }, 2500);
+};
+
+const speak = (text) => {
+  if (!window.speechSynthesis) return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  utterance.lang = "en-IN";
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  window.speechSynthesis.speak(utterance);
+};
+
+const toggleVoice = () => {
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+
+  setVoiceEnabled((prev) => !prev);
 };
 
   return (
@@ -195,12 +224,23 @@ const handleSuggested = (s) => {
               <div className="text-[10px] text-green-400 font-medium">🟢 Online — Replies instantly</div>
             </div>
           </div>
-          <button 
-            className="btn-ghost !py-1.5 !px-3.5 text-xs font-semibold hover:!bg-[rgba(212,160,23,0.08)] cursor-pointer"
-            onClick={() => router.push('/voice')}
-          >
-            🎙️ Voice Mode
-          </button>
+          <div className="flex items-center gap-2">
+
+
+   <button
+  onClick={toggleVoice}
+  className="btn-ghost !py-1.5 !px-3 text-xs font-semibold cursor-pointer"
+>
+  {voiceEnabled ? "🔊 Voice On" : "🔇 Voice Off"}
+</button>
+
+  <button
+    className="btn-ghost !py-1.5 !px-3.5 text-xs font-semibold cursor-pointer"
+    onClick={() => router.push('/voice')}
+  >
+    🎙️ Voice Mode
+  </button>
+</div>
         </div>
 
         {/* Message logs */}
