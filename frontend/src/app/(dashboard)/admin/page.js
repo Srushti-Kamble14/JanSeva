@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from 'react'
-import { SCHEMES } from '@/utils/data'
 
 export default function AdminPage() {
   const [schemes, setSchemes] = useState(SCHEMES)

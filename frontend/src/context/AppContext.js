@@ -7,9 +7,10 @@ const AppContext = createContext(null)
 
 export function AppProvider({ children }) {
   const [theme, setTheme] = useState('dark')
-  const [language, setLanguage] = useState('English')
+  const [language, setLanguage] = useState('en')
   const [user, setUser] = useState(null)
   const [savedSchemes, setSavedSchemes] = useState([])
+
 
 
   const fetchProfile = async () => {
@@ -37,6 +38,14 @@ export function AppProvider({ children }) {
   }
 };
 
+useEffect(() => {
+  const savedLanguage =
+    localStorage.getItem("language");
+
+  if (savedLanguage) {
+    setLanguage(savedLanguage);
+  }
+}, [language]);
 
   useEffect(() => {
   const saved = localStorage.getItem("savedSchemes");

@@ -6,6 +6,8 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useApp } from '@/context/AppContext'
 import LangModal from './LangModal'
 import { motion, AnimatePresence } from 'framer-motion'
+import {translations} from "@/utils/translations"
+import { LANGUAGES } from "@/utils/data";
 
 export default function Navbar() {
   const { theme, toggleTheme, language, user, logout } = useApp()
@@ -14,6 +16,15 @@ export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
 
+  const t =
+  translations[language] ||
+  translations.en;
+
+  const currentLanguage =
+  LANGUAGES.find(
+    l => l.code === language
+  );
+
   const handleLogout = () => {
     logout()
     router.push('/')
@@ -21,10 +32,10 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false)
 
   const links = [
-    { to: '/', label: 'Home' },
-    { to: '/schemes', label: 'Schemes' },
-    { to: '/chat', label: 'AI Chat' },
-    { to: '/voice', label: 'Voice' },
+    { to: '/', label: t.home },
+    { to: '/schemes', label: t.schemes },
+    { to: '/chat', label: t.aiChat },
+    { to: '/voice', label: t.voice },
   ]
 
   const isActive = (path) => {
@@ -71,7 +82,9 @@ export default function Navbar() {
             onClick={() => setLangOpen(true)}
             title="Change language"
           >
-            🌐 <span>{language}</span>
+           🌐 <span>
+  {currentLanguage?.native  || "English"}
+</span>
           </button>
           
           <button 
@@ -85,19 +98,19 @@ export default function Navbar() {
           {user ? (
             <>
               <Link href="/dashboard" className="btn-ghost !py-1.5 !px-4 text-xs font-sans">
-                Dashboard
+                {t.dashboard}
               </Link>
               <button onClick={handleLogout} className="btn-gold !py-1.5 !px-4 text-xs font-sans cursor-pointer">
-                Log Out
+                {t.logout}
               </button>
             </>
           ) : (
             <>
               <Link href="/login" className="btn-ghost !py-1.5 !px-4 text-xs font-sans">
-                Log In
+                {t.login}
               </Link>
               <Link href="/signup" className="btn-gold !py-1.5 !px-4 text-xs font-sans">
-                Get Started
+                {t.getStarted}
               </Link>
             </>
           )}
@@ -143,7 +156,7 @@ export default function Navbar() {
                 className="flex items-center gap-1.5 text-sm font-medium text-left font-sans py-1 cursor-pointer" 
                 onClick={() => { setLangOpen(true); closeMenu() }}
               >
-                🌐 Language: {language}
+                🌐 {currentLanguage?.native  || "English"}
               </button>
               
               <button 
@@ -158,26 +171,26 @@ export default function Navbar() {
               {user ? (
                 <>
                   <Link href="/dashboard" className="text-sm font-medium py-1 font-sans text-left" onClick={closeMenu}>
-                    Dashboard
+                    {t.dashboard}
                   </Link>
                   <button 
                     onClick={() => { handleLogout(); closeMenu() }} 
                     className="text-sm font-medium text-left text-red-400 py-1 font-sans cursor-pointer"
                   >
-                    Log Out
+                    {t.logout}
                   </button>
                 </>
               ) : (
                 <>
                   <Link href="/login" className="text-sm font-medium py-1 font-sans text-left" onClick={closeMenu}>
-                    Log In
+                    {t.login}
                   </Link>
                   <Link 
                     href="/signup" 
                     className="btn-gold !py-2 !w-full text-center text-xs font-sans font-medium" 
                     onClick={closeMenu}
                   >
-                    Get Started
+                    {t.getStarted}
                   </Link>
                 </>
               )}
