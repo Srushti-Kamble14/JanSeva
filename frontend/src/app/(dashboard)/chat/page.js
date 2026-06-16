@@ -6,13 +6,14 @@ import { useChat } from '@/hooks/useChat'
 import { useApp } from '@/context/AppContext'
 import { motion, AnimatePresence } from 'framer-motion'
 import axios from "axios";
+import { translations } from "@/utils/translations";
 
-const SUGGESTED = [
-  '🎓 Scholarships for students',
-  '🌾 Schemes for farmers',
-  '👩 Women empowerment schemes',
-  '🚀 Startup funding schemes',
-  '🏥 Health insurance schemes',
+const SUGGESTED_KEYS = [
+  'quickScholarships',
+  'quickFarmers',
+  'quickWomen',
+  'quickStartupSchemes',
+  'quickHealthSchemes',
 ]
 
 export default function ChatPage() {
@@ -24,14 +25,14 @@ export default function ChatPage() {
   addAssistantMessage,
   clear,
 } = useChat();
-  const { theme } = useApp()
+  const { theme, language } = useApp()
+  const t = translations[language] || translations.en
   const [input, setInput] = useState('')
   const [micActive, setMicActive] = useState(false)
   const [history, setHistory] = useState([]);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const messagesEndRef = useRef(null)
   const router = useRouter()
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
@@ -89,6 +90,7 @@ localStorage.setItem(
       "http://localhost:5000/api/ai/chat",
       {
         message: text,
+          language,
       }
     );
 
@@ -103,7 +105,7 @@ localStorage.setItem(
     console.log(error);
 
     addAssistantMessage(
-      "Something went wrong while fetching AI response."
+      t.aiError
     );
   } finally {
     setTyping(false);
@@ -127,7 +129,7 @@ const handleSuggested = (s) => {
     setMicActive(false);
 
     handleSend(
-      "What scholarships are available for engineering students?"
+      t.sampleScholarshipQuestion
     );
   }, 2500);
 };
@@ -137,13 +139,34 @@ const speak = (text) => {
 
   window.speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(text);
+  const utterance =
+    new SpeechSynthesisUtterance(text);
 
-  utterance.lang = "en-IN";
+  const languageMap = {
+    en: "en-IN",
+    hi: "hi-IN",
+    mr: "mr-IN",
+    ta: "ta-IN",
+    te: "te-IN",
+    bn: "bn-IN",
+    gu: "gu-IN",
+    kn: "kn-IN",
+    ml: "ml-IN",
+    pa: "pa-IN",
+    ur: "ur-PK",
+  };
+
+  utterance.lang =
+    languageMap[language] || "en-IN";
+
   utterance.rate = 1;
   utterance.pitch = 1;
 
-  window.speechSynthesis.speak(utterance);
+ 
+
+  window.speechSynthesis.speak(
+    utterance
+  );
 };
 
 const toggleVoice = () => {
@@ -162,7 +185,7 @@ const toggleVoice = () => {
           ? 'bg-[#111111]/40 border-[rgba(212,160,23,0.15)] text-[#F0E6C8]'
           : 'bg-[#FFFFFF]/60 border-[rgba(139,105,20,0.15)] text-[#1A1208]'
       }`}>
-        <h3 className="font-serif text-lg font-bold text-[#F2C94C] mb-4">AI Assistant</h3>
+        <h3 className="font-serif text-lg font-bold text-[#F2C94C] mb-4">{t.aiAssistant}</h3>
         <button 
           className="btn-gold !py-2.5 !w-full text-xs font-semibold mb-6 shadow-md cursor-pointer"
          onClick={() => {
@@ -171,10 +194,10 @@ const toggleVoice = () => {
   localStorage.removeItem("chatHistory");
 }}
         >
-          + New Chat
+          {t.newChat}
         </button>
 
-        <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-2">History</div>
+        <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-2">{t.history}</div>
         <div className="flex-1 overflow-y-auto space-y-2 mb-6 max-h-[160px] lg:max-h-none">
          {history.map((h, i) => (
            <div
@@ -187,21 +210,21 @@ const toggleVoice = () => {
   </p>
 
   <span className="text-[9px] text-[#A89060]">
-    Previous Search
+    {t.previousSearch}
   </span>
 </div>
           ))}
         </div>
 
-        <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-2">Quick Questions</div>
+        <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-2">{t.quickQuestions}</div>
         <div className="space-y-1.5 overflow-y-auto max-h-[160px] lg:max-h-none">
-          {SUGGESTED.map(s => (
+          {SUGGESTED_KEYS.map(key => (
             <button 
-              key={s} 
+              key={key} 
               className="w-full text-left p-2.5 rounded-lg text-xs font-medium bg-white/[0.02] border border-transparent hover:border-[rgba(212,160,23,0.15)] hover:text-[#D4A017] transition-all cursor-pointer truncate"
-              onClick={() => handleSuggested(s)}
+              onClick={() => handleSuggested(t[key])}
             >
-              {s}
+              {t[key]}
             </button>
           ))}
         </div>
@@ -221,7 +244,7 @@ const toggleVoice = () => {
             </div>
             <div>
               <div className="text-sm font-semibold">JanSeva AI</div>
-              <div className="text-[10px] text-green-400 font-medium">🟢 Online — Replies instantly</div>
+              <div className="text-[10px] text-green-400 font-medium">{t.onlineInstant}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -231,14 +254,14 @@ const toggleVoice = () => {
   onClick={toggleVoice}
   className="btn-ghost !py-1.5 !px-3 text-xs font-semibold cursor-pointer"
 >
-  {voiceEnabled ? "🔊 Voice On" : "🔇 Voice Off"}
+  {voiceEnabled ? t.voiceOn : t.voiceOff}
 </button>
 
   <button
     className="btn-ghost !py-1.5 !px-3.5 text-xs font-semibold cursor-pointer"
     onClick={() => router.push('/voice')}
   >
-    🎙️ Voice Mode
+    {t.voiceMode}
   </button>
 </div>
         </div>
@@ -286,7 +309,7 @@ const toggleVoice = () => {
           rel="noopener noreferrer"
           className="inline-block mt-2 text-[11px] font-semibold text-[#D4A017]"
         >
-          View Scheme →
+          {t.viewScheme}
         </a>
       </div>
     ))}
@@ -333,7 +356,7 @@ const toggleVoice = () => {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={handleKey}
-              placeholder="Ask about any government scheme..."
+              placeholder={t.chatPlaceholder}
               rows={1}
             />
             <div className="flex items-center gap-1 border-l border-[rgba(212,160,23,0.08)] pl-2">
@@ -344,7 +367,7 @@ const toggleVoice = () => {
                     : 'bg-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.15)] text-[#D4A017]'
                 }`}
                 onClick={toggleMic}
-                title="Speak question"
+                title={t.speakQuestion}
               >
                 🎙️
               </button>
@@ -356,7 +379,7 @@ const toggleVoice = () => {
               </button>
             </div>
           </div>
-          <p className="text-[10px] text-[#A89060] mt-1.5 text-center">Press Enter to send · Shift+Enter for new line</p>
+          <p className="text-[10px] text-[#A89060] mt-1.5 text-center">{t.enterToSend}</p>
         </div>
       </div>
     </div>

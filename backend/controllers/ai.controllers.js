@@ -7,7 +7,22 @@ const groq = new Groq({
 
 export const chatWithAi = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message,language } = req.body;
+    // console.log("Language:", language);
+    const languageMap = {
+  en: "English",
+  hi: "Hindi",
+  mr: "Marathi",
+  ta: "Tamil",
+  te: "Telugu",
+  bn: "Bengali",
+  gu: "Gujarati",
+  kn: "Kannada",
+  ml: "Malayalam",
+  pa: "Punjabi",
+  or: "Odia",
+  ur: "Urdu",
+};
 // console.log(process.env.MYSCHEME_API_KEY);
     const schemes = await searchSchemes(message, 5);
 
@@ -38,11 +53,15 @@ export const chatWithAi = async (req, res) => {
 
 Use only the provided schemes.
 
+Reply ONLY in ${languageMap[language] || "English"}.
+
+
+
 Do not use markdown.
 Do not use **, *, #, bullet markdown, or code blocks.
 Return plain text only.
 
-Keep answers simple and readable.
+Keep answers simple and easy to understand for Indian citizens.
          `
 
             

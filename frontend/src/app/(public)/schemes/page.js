@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useApp } from "@/context/AppContext";
 import axios from "axios";
+import { translations } from "@/utils/translations";
 
 export default function SchemesPage() {
-  const { savedSchemes, toggleSave } = useApp();
+  const { savedSchemes, toggleSave, language } = useApp();
+  const t = translations[language] || translations.en;
   const [search, setSearch] = useState("");
 
   const [schemes, setSchemes] = useState([]);
@@ -42,7 +44,7 @@ export default function SchemesPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[60vh] text-white">
-        Loading schemes...
+        {t.loadingSchemes}
       </div>
     );
   }
@@ -51,10 +53,10 @@ export default function SchemesPage() {
     <div className="max-w-6xl mx-auto px-6 py-10 font-sans">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold font-serif mb-2 text-white">
-          Government Schemes
+          {t.governmentSchemes}
         </h1>
         <p className="text-sm md:text-base text-[#A89060]">
-          500+ schemes from Central and State governments — all in one place
+          {t.schemesSubtitle}
         </p>
       </div>
 
@@ -66,7 +68,7 @@ export default function SchemesPage() {
         <input
           className="w-full bg-[#1A1A1A] border border-[rgba(212,160,23,0.18)] focus:border-[#8B6914] text-[#F0E6C8] pl-11 pr-10 py-3 rounded-xl text-sm font-sans outline-none transition-colors"
           type="text"
-          placeholder="Search by scheme name, category, or tag..."
+          placeholder={t.schemeSearchPlaceholder}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -87,10 +89,10 @@ export default function SchemesPage() {
         <div className="text-center py-16 border border-dashed border-[rgba(212,160,23,0.15)] rounded-2xl bg-white/[0.01]">
           <div className="text-4xl mb-3">🔍</div>
           <h3 className="font-serif text-lg font-semibold text-white">
-            No schemes found
+            {t.noSchemesFound}
           </h3>
           <p className="text-sm text-[#A89060] mt-1">
-            Try a different search term or category filter
+            {t.tryDifferentSearch}
           </p>
         </div>
       ) : (
@@ -120,7 +122,7 @@ export default function SchemesPage() {
                         e.stopPropagation();
                         toggleSave(s.id);
                       }}
-                      title={isSaved ? "Remove from saved" : "Save scheme"}
+                      title={isSaved ? t.removeFromSaved : t.saveScheme}
                     >
                       {isSaved ? "⭐" : "☆"}
                     </button>
@@ -147,7 +149,7 @@ export default function SchemesPage() {
                     rel="noopener noreferrer"
                     className="btn-apply text-[11px] font-sans font-medium py-1.5 px-4 rounded-lg"
                   >
-                    View →
+                    {t.view}
                   </a>
                 </div>
               </motion.div>

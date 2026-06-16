@@ -80,7 +80,7 @@ export default function Navbar() {
           <button 
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[rgba(212,160,23,0.3)] text-xs font-sans hover:bg-[rgba(212,160,23,0.1)] transition-colors cursor-pointer"
             onClick={() => setLangOpen(true)}
-            title="Change language"
+            title={t.changeLanguage}
           >
            🌐 <span>
   {currentLanguage?.native  || "English"}
@@ -90,7 +90,7 @@ export default function Navbar() {
           <button 
             className="w-8 h-8 flex items-center justify-center rounded-lg border border-[rgba(212,160,23,0.3)] hover:bg-[rgba(212,160,23,0.1)] transition-colors text-sm cursor-pointer"
             onClick={toggleTheme}
-            title="Toggle theme"
+            title={t.toggleTheme}
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
@@ -120,7 +120,7 @@ export default function Navbar() {
         <button 
           className="md:hidden w-8 h-8 flex items-center justify-center text-xl cursor-pointer"
           onClick={() => setMenuOpen(o => !o)}
-          aria-label="Menu"
+          aria-label={t.menu}
         >
           {menuOpen ? '✕' : '☰'}
         </button>

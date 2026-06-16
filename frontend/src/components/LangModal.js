@@ -2,16 +2,23 @@
 
 import { useApp } from '@/context/AppContext'
 import { LANGUAGES } from '@/utils/data'
+import { translations } from '@/utils/translations'
 import { motion } from 'framer-motion'
 
 export default function LangModal({ onClose }) {
   const { language, setLanguage } = useApp()
+  const t = translations[language] || translations.en
 
  const pick = (lang) => {
-  setLanguage(lang.code)
+  setLanguage(lang.code);
 
-  onClose()
-}
+  localStorage.setItem(
+    "language",
+    lang.code
+  );
+
+  onClose();
+};
 
   return (
     <div 
@@ -26,7 +33,7 @@ export default function LangModal({ onClose }) {
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-5 border-b border-[rgba(212,160,23,0.1)]">
-          <h3 className="font-serif text-xl font-bold text-[#D4A017]">Select Language</h3>
+          <h3 className="font-serif text-xl font-bold text-[#D4A017]">{t.selectLanguage}</h3>
           <button 
             onClick={onClose} 
             className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(212,160,23,0.05)] text-[#A89060] hover:bg-[rgba(212,160,23,0.2)] hover:text-[#D4A017] transition-colors text-base cursor-pointer"

@@ -8,19 +8,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import axios from 'axios'
 import { useApp } from '@/context/AppContext'
-
-// Zod Signup validation schema
-const signupSchema = z.object({
-  fullName: z.string().min(3, 'Full name must be at least 3 characters'),
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-})
+import { translations } from '@/utils/translations'
 
 export default function SignupPage() {
   const [showPw, setShowPw] = useState(false)
-  const { login } = useApp()
+  const { language } = useApp()
   const router = useRouter()
   const [errorMsg, setErrorMsg] = useState('')
+  const t = translations[language] || translations.en
+
+  const signupSchema = z.object({
+    fullName: z.string().min(3, t.fullNameMin || 'Full name must be at least 3 characters'),
+    email: z.string().min(1, t.emailRequired || 'Email is required').email(t.invalidEmail || 'Invalid email address'),
+    password: z.string().min(8, t.passwordMin8 || 'Password must be at least 8 characters'),
+  })
 
   const {
     register,
@@ -38,21 +39,19 @@ export default function SignupPage() {
   const onSubmit = async (data) => {
     setErrorMsg('')
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/users/register",
-        { 
+        {
           fullName: data.fullName,
           email: data.email,
           password: data.password,
-          
         }
       )
-      
 
       router.push("/login")
     } catch (error) {
       console.error(error)
-      setErrorMsg(error?.response?.data?.message || "Signup failed. Please try again.")
+      setErrorMsg(error?.response?.data?.message || t.signupFailed)
     }
   }
 
@@ -60,11 +59,11 @@ export default function SignupPage() {
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-12 font-sans">
       <div className="w-full max-w-md bg-[#111111] border border-[rgba(212,160,23,0.18)] rounded-2xl p-8 shadow-xl">
         <Link href="/" className="inline-block text-xs font-semibold text-[#A89060] hover:text-[#D4A017] transition-colors mb-6">
-          ← Back to home
+          {t.backToHome}
         </Link>
-        
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">Create account</h2>
-        <p className="text-xs text-[#A89060] mb-6">Join 1.4M+ citizens already using JanSeva AI</p>
+
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">{t.createAccount}</h2>
+        <p className="text-xs text-[#A89060] mb-6">{t.signupSubtitle}</p>
 
         {errorMsg && (
           <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 font-semibold mb-6">
@@ -74,18 +73,18 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">Full name</label>
+            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">{t.fullName}</label>
             <input
               className={`input ${errors.fullName ? 'border-red-400' : ''}`}
               type="text"
-              placeholder="Arjun Sharma"
+              placeholder={t.fullNamePlaceholder}
               {...register('fullName')}
             />
             {errors.fullName && <p className="text-red-400 text-[10px] mt-1 font-medium">{errors.fullName.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">Email address</label>
+            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">{t.emailAddress}</label>
             <input
               className={`input ${errors.email ? 'border-red-400' : ''}`}
               type="email"
@@ -96,16 +95,16 @@ export default function SignupPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">Password</label>
+            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">{t.password}</label>
             <div className="relative">
               <input
                 className={`input pr-10 ${errors.password ? 'border-red-400' : ''}`}
                 type={showPw ? 'text' : 'password'}
-                placeholder="Min. 8 characters"
+                placeholder={t.minPasswordPlaceholder}
                 {...register('password')}
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-base select-none cursor-pointer text-[#A89060] hover:text-[#D4A017]"
                 onClick={() => setShowPw(s => !s)}
               >
@@ -115,18 +114,18 @@ export default function SignupPage() {
             {errors.password && <p className="text-red-400 text-[10px] mt-1 font-medium">{errors.password.message}</p>}
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isSubmitting}
             className="btn-gold !w-full !py-3 text-sm font-semibold tracking-wide mt-4 shadow-md cursor-pointer disabled:opacity-50"
           >
-            {isSubmitting ? 'Creating account...' : 'Create Account'}
+            {isSubmitting ? t.creatingAccount : t.createAccount}
           </button>
         </form>
 
         <div className="flex items-center justify-between gap-3 my-6">
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
-          <p className="text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold">or continue with</p>
+          <p className="text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold">{t.orContinueWith}</p>
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
         </div>
 
@@ -137,11 +136,11 @@ export default function SignupPage() {
             <path d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z" fill="#FBBC05"/>
             <path d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z" fill="#EA4335"/>
           </svg>
-          Sign up with Google
+          {t.signUpWithGoogle}
         </button>
 
         <p className="text-xs text-[#A89060] text-center mt-6">
-          Already have an account? <Link href="/login" className="text-[#D4A017] hover:underline font-semibold">Sign in</Link>
+          {t.alreadyHaveAccount} <Link href="/login" className="text-[#D4A017] hover:underline font-semibold">{t.signIn}</Link>
         </p>
       </div>
     </div>

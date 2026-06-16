@@ -1,12 +1,16 @@
 "use client"
 
 import { useState } from 'react'
+import { useApp } from '@/context/AppContext'
+import { translations } from '@/utils/translations'
 
 export default function AdminPage() {
   const [schemes, setSchemes] = useState(SCHEMES)
+  const { language } = useApp()
+  const t = translations[language] || translations.en
 
   const remove = (id) => {
-    if (confirm("Are you sure you want to delete this scheme?")) {
+    if (confirm(t.confirmDeleteScheme)) {
       setSchemes(s => s.filter(x => x.id !== id))
     }
   }
@@ -15,21 +19,21 @@ export default function AdminPage() {
     <div className="space-y-8 font-sans">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-white mb-1">Admin Panel</h1>
-          <p className="text-sm text-[#A89060]">Manage government schemes and view system-wide analytics</p>
+          <h1 className="text-3xl font-bold font-serif text-white mb-1">{t.adminPanel}</h1>
+          <p className="text-sm text-[#A89060]">{t.adminSubtitle}</p>
         </div>
         <button className="btn-gold !py-2.5 !px-5 text-xs font-semibold shadow-md cursor-pointer">
-          + Add Scheme
+          {t.addScheme}
         </button>
       </div>
 
       {/* Analytics Counters */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Schemes', value: '527' },
-          { label: 'Active', value: '489' },
-          { label: 'Total Users', value: '1.4M' },
-          { label: 'Applications', value: '89K' },
+          { label: t.totalSchemes, value: '527' },
+          { label: t.active, value: '489' },
+          { label: t.totalUsers, value: '1.4M' },
+          { label: t.applications, value: '89K' },
         ].map(m => (
           <div key={m.label} className="metric-card border border-[rgba(212,160,23,0.18)] shadow-sm">
             <div className="metric-label">{m.label}</div>
@@ -40,17 +44,17 @@ export default function AdminPage() {
 
       {/* Schemes Data Table Card */}
       <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md overflow-hidden">
-        <h3 className="font-serif text-lg font-bold text-white mb-6 pb-2 border-b border-[rgba(212,160,23,0.08)]">Manage Schemes</h3>
+        <h3 className="font-serif text-lg font-bold text-white mb-6 pb-2 border-b border-[rgba(212,160,23,0.08)]">{t.manageSchemes}</h3>
         
         <div className="overflow-x-auto -mx-6">
           <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
               <tr className="border-b border-[rgba(212,160,23,0.12)] text-[10px] uppercase tracking-wider text-[#A89060] font-bold">
-                <th className="px-6 py-4 font-bold">Scheme Name</th>
-                <th className="px-6 py-4 font-bold">Category</th>
-                <th className="px-6 py-4 font-bold">Benefit</th>
-                <th className="px-6 py-4 font-bold">Status</th>
-                <th className="px-6 py-4 font-bold text-right">Actions</th>
+                <th className="px-6 py-4 font-bold">{t.schemeName}</th>
+                <th className="px-6 py-4 font-bold">{t.category}</th>
+                <th className="px-6 py-4 font-bold">{t.benefit}</th>
+                <th className="px-6 py-4 font-bold">{t.status}</th>
+                <th className="px-6 py-4 font-bold text-right">{t.actions}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.02] text-xs text-[#F0E6C8]">
@@ -78,13 +82,13 @@ export default function AdminPage() {
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button className="px-3 py-1.5 rounded-lg border border-[rgba(212,160,23,0.25)] text-[#A89060] hover:bg-[rgba(212,160,23,0.05)] hover:text-[#D4A017] transition-all cursor-pointer">
-                        Edit
+                        {t.edit}
                       </button>
                       <button 
                         onClick={() => remove(s.id)}
                         className="px-3 py-1.5 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 hover:border-red-500/40 transition-all cursor-pointer"
                       >
-                        Delete
+                        {t.delete}
                       </button>
                     </div>
                   </td>

@@ -52,7 +52,7 @@ const ACCOUNT = [
         </div>
         <div className="overflow-hidden">
           <div className="text-sm font-semibold truncate leading-tight">
-            {user?.fullName || "Guest User"}
+            {user?.fullName || t.guestUser}
           </div>
           <div className="text-xs text-[#A89060] truncate">
             {user?.email || "arjun@gmail.com"}

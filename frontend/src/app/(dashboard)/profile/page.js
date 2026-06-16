@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import axios from "axios";
 import { useApp } from "@/context/AppContext";
-
+import { translations } from "@/utils/translations";
 
 // Profile Form Validation Schema
 const profileSchema = z.object({
@@ -28,6 +28,7 @@ const profileSchema = z.object({
 export default function ProfilePage() {
   const router = useRouter();
   const { user, savedSchemes, toggleSave, language, setLanguage } = useApp();
+  const t = translations[language] || translations.en;
   const [savedStatus, setSavedStatus] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -162,7 +163,7 @@ useEffect(() => {
 
       setSavedStatus(true);
     } catch (error) {
-      setErrorMsg(error?.response?.data?.message || "Failed to save profile");
+      setErrorMsg(error?.response?.data?.message || t.failedSaveProfile);
     } finally {
       setIsSaving(false);
     }
@@ -197,7 +198,7 @@ useEffect(() => {
           
         >
           {/* {savedStatus ? "Saved ✓" : "Save Changes"} */}
-          {isSaving ? "Saving..." : savedStatus ? "✅ Saved" : "Saved Changes"}
+          {isSaving ? t.saving : savedStatus ? t.savedDone : t.saveChanges}
          
         </button>
       </div>
@@ -216,13 +217,13 @@ useEffect(() => {
           className="lg:col-span-2 p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4"
         >
           <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)]">
-            Personal Information
+            {t.personalInformation}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                Full Name
+                {t.fullName}
               </label>
               <input
                 className={`input ${errors.name ? "border-red-400" : ""}`}
@@ -238,7 +239,7 @@ useEffect(() => {
 
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                Email address
+                {t.emailAddress}
               </label>
               <input
                 className={`input ${errors.email ? "border-red-400" : ""}`}
@@ -256,7 +257,7 @@ useEffect(() => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                Phone Number
+                {t.phoneNumber}
               </label>
               <input
                 className={`input ${errors.phone ? "border-red-400" : ""}`}
@@ -273,69 +274,69 @@ useEffect(() => {
 
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                Date of Birth
+                {t.dateOfBirth}
               </label>
               <input className="input" type="date" {...register("dob")} />
             </div>
           </div>
         </form>
 
-        {/* Right Preferences column */}
+        {/* Right {t.preferences} column */}
         <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4">
           <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)]">
-            Preferences
+            {t.preferences}
           </h3>
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              Preferred Language
+              {t.preferredLanguage}
             </label>
             <select className="input cursor-pointer" {...register("language")}>
-              <option value="ENGLISH">English</option>
-              <option value="HINDI">Hindi</option>
-              <option value="MARATHI">Marathi</option>
-              <option value="TAMIL">Tamil</option>
-              <option value="TELUGU">Telugu</option>
-              <option value="BENGALI">Bengali</option>
+              <option value="ENGLISH">{t.english}</option>
+              <option value="HINDI">{t.hindi}</option>
+              <option value="MARATHI">{t.marathi}</option>
+              <option value="TAMIL">{t.tamil}</option>
+              <option value="TELUGU">{t.telugu}</option>
+              <option value="BENGALI">{t.bengali}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              Category
+              {t.category}
             </label>
             <select className="input cursor-pointer" {...register("category")}>
-              <option value="STUDENT">Student</option>
-              <option value="FARMER">Farmer</option>
-              <option value="WOMEN">Women</option>
-              <option value="SENIOR_CITIZEN">Senior Citizen</option>
-              <option value="STARTUP_FOUNDER">Startup Founder</option>
+              <option value="STUDENT">{t.student}</option>
+              <option value="FARMER">{t.farmer}</option>
+              <option value="WOMEN">{t.categoryWomen}</option>
+              <option value="SENIOR_CITIZEN">{t.seniorCitizen}</option>
+              <option value="STARTUP_FOUNDER">{t.startupFounder}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              State
+              {t.stateLabel}
             </label>
             <select className="input cursor-pointer" {...register("state")}>
-              <option value="MAHARASHTRA">Maharashtra</option>
-              <option value="TAMIL_NADU">Tamil Nadu</option>
-              <option value="KARNATAKA">Karnataka</option>
-              <option value="PUNJAB">Punjab</option>
-              <option value="GUJARAT">Gujarat</option>
-              <option value="RAJASTHAN">Rajasthan</option>
+              <option value="MAHARASHTRA">{t.maharashtra}</option>
+              <option value="TAMIL_NADU">{t.tamilNadu}</option>
+              <option value="KARNATAKA">{t.karnataka}</option>
+              <option value="PUNJAB">{t.punjab}</option>
+              <option value="GUJARAT">{t.gujarat}</option>
+              <option value="RAJASTHAN">{t.rajasthan}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              Annual Income
+              {t.annualIncome}
             </label>
             <select className="input cursor-pointer" {...register("income")}>
-              <option value="1">Below ₹2.5 Lakh</option>
-              <option value="2">₹2.5L – ₹5L</option>
-              <option value="3">₹5L – ₹10L</option>
-              <option value="4">Above ₹10L</option>
+              <option value="1">{t.incomeBelow}</option>
+              <option value="2">{t.incomeMiddleLow}</option>
+              <option value="3">{t.incomeMiddle}</option>
+              <option value="4">{t.incomeAbove}</option>
             </select>
           </div>
         </div>
@@ -344,7 +345,7 @@ useEffect(() => {
       {/* Saved Schemes Section */}
       <div className="p-6 rounded-2xl bg-[#111111]/30 border border-[rgba(212,160,23,0.12)] shadow-sm">
         <h3 className="font-serif text-lg font-bold text-white mb-6 pb-2 border-b border-[rgba(212,160,23,0.08)]">
-          Saved Schemes{" "}
+          {t.savedSchemes}{" "}
           <span className="ml-1 px-2 py-0.5 rounded-full bg-[rgba(212,160,23,0.06)] text-xs text-[#D4A017]">
             {savedList.length}
           </span>
@@ -352,7 +353,7 @@ useEffect(() => {
 
         {savedList.length === 0 ? (
           <p className="text-sm text-[#A89060] py-4 text-center">
-            No saved schemes yet. Browse schemes to save them.
+            {t.noSavedSchemesProfile}
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -395,8 +396,7 @@ useEffect(() => {
   target="_blank"
   rel="noopener noreferrer"
 >
-                    View Details →
-                  </a>
+                    {t.viewDetails}</a>
                 </div>
               </div>
             ))}

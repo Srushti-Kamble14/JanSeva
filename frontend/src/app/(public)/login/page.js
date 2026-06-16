@@ -8,19 +8,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import axios from 'axios'
 import { useApp } from '@/context/AppContext'
-
-// Zod Login validation schema
-const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  rememberMe: z.boolean().optional(),
-})
+import { translations } from '@/utils/translations'
 
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false)
-  const { login } = useApp()
+  const { language } = useApp()
   const router = useRouter()
   const [errorMsg, setErrorMsg] = useState('')
+  const t = translations[language] || translations.en
+
+  const loginSchema = z.object({
+    email: z.string().min(1, t.emailRequired || 'Email is required').email(t.invalidEmail || 'Invalid email address'),
+    password: z.string().min(6, t.passwordMin6 || 'Password must be at least 6 characters'),
+    rememberMe: z.boolean().optional(),
+  })
 
   const {
     register,
@@ -36,7 +37,6 @@ export default function LoginPage() {
   })
 
   const onSubmit = async (data) => {
-   
     try {
       const res = await axios.post(
         "http://localhost:5000/api/users/login",
@@ -45,21 +45,15 @@ export default function LoginPage() {
           password: data.password,
         }
       )
-      
-    localStorage.setItem("accessToken" , res.data.accessToken);
-    localStorage.setItem("refreshToken" , res.data.refreshToken);
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(res.data.user)
-    )
-
-    console.log("User login successfull")
+      localStorage.setItem("accessToken", res.data.accessToken)
+      localStorage.setItem("refreshToken", res.data.refreshToken)
+      localStorage.setItem("user", JSON.stringify(res.data.user))
 
       router.push("/dashboard")
     } catch (error) {
       console.error(error)
-      setErrorMsg(error?.response?.data?.message || "Invalid credentials")
+      setErrorMsg(error?.response?.data?.message || t.invalidCredentials)
     }
   }
 
@@ -67,11 +61,11 @@ export default function LoginPage() {
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-12 font-sans">
       <div className="w-full max-w-md bg-[#111111] border border-[rgba(212,160,23,0.18)] rounded-2xl p-8 shadow-xl">
         <Link href="/" className="inline-block text-xs font-semibold text-[#A89060] hover:text-[#D4A017] transition-colors mb-6">
-          ← Back to home
+          {t.backToHome}
         </Link>
-        
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">Welcome back</h2>
-        <p className="text-xs text-[#A89060] mb-6">Sign in to access your schemes and AI assistant</p>
+
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">{t.welcomeBack}</h2>
+        <p className="text-xs text-[#A89060] mb-6">{t.loginSubtitle}</p>
 
         {errorMsg && (
           <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 font-semibold mb-6">
@@ -81,7 +75,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">Email address</label>
+            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">{t.emailAddress}</label>
             <input
               className={`input ${errors.email ? 'border-red-400' : ''}`}
               type="email"
@@ -92,16 +86,16 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">Password</label>
+            <label className="block text-xs font-semibold text-[#A89060] mb-1.5">{t.password}</label>
             <div className="relative">
               <input
                 className={`input pr-10 ${errors.password ? 'border-red-400' : ''}`}
                 type={showPw ? 'text' : 'password'}
-                placeholder="Enter password"
+                placeholder={t.enterPassword}
                 {...register('password')}
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-base select-none cursor-pointer text-[#A89060] hover:text-[#D4A017]"
                 onClick={() => setShowPw(s => !s)}
               >
@@ -113,28 +107,28 @@ export default function LoginPage() {
 
           <div className="flex items-center justify-between text-xs text-[#A89060] pt-1">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 className="rounded border-[rgba(212,160,23,0.3)] accent-[#D4A017] cursor-pointer"
                 {...register('rememberMe')}
               />
-              Remember me
+              {t.rememberMe}
             </label>
-            <span className="hover:text-[#D4A017] cursor-pointer">Forgot password?</span>
+            <span className="hover:text-[#D4A017] cursor-pointer">{t.forgotPassword}</span>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isSubmitting}
             className="btn-gold !w-full !py-3 text-sm font-semibold tracking-wide mt-2 shadow-md cursor-pointer disabled:opacity-50"
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
+            {isSubmitting ? t.signingIn : t.signIn}
           </button>
         </form>
 
         <div className="flex items-center justify-between gap-3 my-6">
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
-          <p className="text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold">or continue with</p>
+          <p className="text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold">{t.orContinueWith}</p>
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
         </div>
 
@@ -145,11 +139,11 @@ export default function LoginPage() {
             <path d="M4.5 10.52a4.8 4.8 0 010-3.04V5.41H1.83a8 8 0 000 7.18l2.67-2.07z" fill="#FBBC05"/>
             <path d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 001.83 5.4L4.5 7.49a4.77 4.77 0 014.48-3.3z" fill="#EA4335"/>
           </svg>
-          Continue with Google
+          {t.continueWithGoogle}
         </button>
 
         <p className="text-xs text-[#A89060] text-center mt-6">
-          Don't have an account? <Link href="/signup" className="text-[#D4A017] hover:underline font-semibold">Sign up free</Link>
+          {t.dontHaveAccount} <Link href="/signup" className="text-[#D4A017] hover:underline font-semibold">{t.signUpFree}</Link>
         </p>
       </div>
     </div>
