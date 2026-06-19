@@ -32,6 +32,7 @@ export default function ChatPage() {
   const [history, setHistory] = useState([]);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const messagesEndRef = useRef(null)
+  const audioRef = useRef(null);
   const router = useRouter()
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -58,7 +59,7 @@ useEffect(() => {
 
  const handleSend = async (customText = null) => {
 
-  window.speechSynthesis.cancel();
+ 
 
   const text = customText || input.trim();
 
@@ -95,21 +96,49 @@ localStorage.setItem(
     );
 
     addAssistantMessage(
-      res.data.reply,
-      res.data.schemes
-    );
-    if (voiceEnabled) {
-  speak(res.data.reply);
-}
-  } catch (error) {
-    console.log(error);
+  res.data.reply,
+  res.data.schemes
+);
 
-    addAssistantMessage(
-      t.aiError
+if (voiceEnabled) {
+  try {
+    const ttsRes = await axios.post(
+      "http://localhost:5000/api/tts/speak",
+      {
+        text: res.data.reply,
+        language,
+      }
     );
-  } finally {
-    setTyping(false);
+
+  if (audioRef.current) {
+  audioRef.current.pause();
+  audioRef.current.currentTime = 0;
+}
+
+const audio = new Audio(
+  `http://localhost:5000${ttsRes.data.audioUrl}`
+);
+
+audioRef.current = audio;
+
+audio.play().catch((err) => {
+  console.log("Audio Error:", err);
+});
+
+  } catch (err) {
+    console.log("TTS Error:", err);
   }
+}
+
+} catch (error) {
+  console.log(error);
+
+  addAssistantMessage(
+    t.aiError
+  );
+} finally {
+  setTyping(false);
+}
 };
   const handleKey = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) { 
@@ -134,44 +163,13 @@ const handleSuggested = (s) => {
   }, 2500);
 };
 
-const speak = (text) => {
-  if (!window.speechSynthesis) return;
 
-  window.speechSynthesis.cancel();
-
-  const utterance =
-    new SpeechSynthesisUtterance(text);
-
-  const languageMap = {
-    en: "en-IN",
-    hi: "hi-IN",
-    mr: "mr-IN",
-    ta: "ta-IN",
-    te: "te-IN",
-    bn: "bn-IN",
-    gu: "gu-IN",
-    kn: "kn-IN",
-    ml: "ml-IN",
-    pa: "pa-IN",
-    ur: "ur-PK",
-  };
-
-  utterance.lang =
-    languageMap[language] || "en-IN";
-
-  utterance.rate = 1;
-  utterance.pitch = 1;
-
- 
-
-  window.speechSynthesis.speak(
-    utterance
-  );
-};
 
 const toggleVoice = () => {
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
+  if (voiceEnabled && audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    audioRef.current = null;
   }
 
   setVoiceEnabled((prev) => !prev);

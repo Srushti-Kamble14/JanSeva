@@ -1,3 +1,4 @@
+console.log("CHAT API HIT");
 import Groq from "groq-sdk";
 import { searchSchemes } from "../services/schemes.services.js";
 
@@ -8,7 +9,9 @@ const groq = new Groq({
 export const chatWithAi = async (req, res) => {
   try {
     const { message,language } = req.body;
-    // console.log("Language:", language);
+//     console.log("BODY:", req.body);
+// console.log("Language:", language);
+    
     const languageMap = {
   en: "English",
   hi: "Hindi",
@@ -83,6 +86,8 @@ ${JSON.stringify(schemeData, null, 2)}
   completion.choices[0].message.content
     .replace(/\*\*/g, "")
     .replace(/#/g, "");
+
+    // console.log("AI Reply:", reply);
 
     return res.json({
       success: true,

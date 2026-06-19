@@ -15,6 +15,7 @@ const HOME_FEATURES = [
 ]
 
 const HOME_CATEGORIES = [
+  
   { icon: '🎓', labelKey: 'categoryEducation', count: 87 },
   { icon: '🌾', labelKey: 'categoryAgriculture', count: 124 },
   { icon: '👩', labelKey: 'categoryWomen', count: 63 },

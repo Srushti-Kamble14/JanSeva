@@ -51,11 +51,11 @@
 
 import dotenv from "dotenv";
 dotenv.config();
-
 import app from "./app.js";
 import authRoutes from "./routes/auth.routes.js";
 import schemesRoutes from "./routes/schemes.routes.js";
 import aiRoutes from "./routes/ai.routes.js"
+import ttsRoutes from "./routes/tts.routes.js";
 
 // console.log("authRoutes:", authRoutes);
 // console.log("schemesRoutes:", schemesRoutes);
@@ -63,6 +63,7 @@ import aiRoutes from "./routes/ai.routes.js"
 app.use("/api/users", authRoutes);
 app.use("/api/schemes", schemesRoutes);
 app.use("/api/ai",aiRoutes);
+app.use("/api/tts", ttsRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on 5000");

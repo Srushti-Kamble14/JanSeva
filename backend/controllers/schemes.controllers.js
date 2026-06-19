@@ -32,8 +32,8 @@ export const getAllSchemes = async (req, res) => {
         data: response.data,
       });
   } catch (error) {
-    console.log("STATUS:", error.response?.status);
-    console.log("DATA:", error.response?.data);
+    // console.log("STATUS:", error.response?.status);
+    // console.log("DATA:", error.response?.data);
 
     return res
       .status(500)

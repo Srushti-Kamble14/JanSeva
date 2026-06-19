@@ -4,8 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules  server.js"
-  },
+  "dev": "nodemon --ignore public/audio/* --ignore *.mp3 --ignore tts-*.json -r dotenv/config --experimental-json-modules server.js"
+},
   "keywords": [
     "node"
   ],
