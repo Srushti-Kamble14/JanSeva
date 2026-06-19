@@ -10,21 +10,6 @@ import axios from "axios";
 import { useApp } from "@/context/AppContext";
 import { translations } from "@/utils/translations";
 
-// Profile Form Validation Schema
-const profileSchema = z.object({
-  name: z.string().min(3, "Full name must be at least 3 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z
-    .string()
-    .regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number")
-    .or(z.literal("")),
-  dob: z.string().optional(),
-  language: z.string().min(1, "Language is required"),
-  category: z.string().min(1, "Category is required"),
-  state: z.string().min(1, "State is required"),
-  income: z.string().min(1, "Income is required"),
-});
-
 export default function ProfilePage() {
   const router = useRouter();
   const { user, savedSchemes, toggleSave, language, setLanguage, fetchProfile: refreshProfile } = useApp();
@@ -33,6 +18,19 @@ export default function ProfilePage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [savedList, setSavedList] = useState([]);
+  const profileSchema = z.object({
+    name: z.string().min(3, t.fullNameMin),
+    email: z.string().email(t.validEmailPrompt),
+    phone: z
+      .string()
+      .regex(/^[6-9]\d{9}$/, t.validPhonePrompt)
+      .or(z.literal("")),
+    dob: z.string().optional(),
+    language: z.string().min(1, t.languageRequired),
+    category: z.string().min(1, t.categoryRequired),
+    state: z.string().min(1, t.stateRequired),
+    income: z.string().min(1, t.incomeRequired),
+  });
 
   const fetchSavedSchemes = async () => {
   try {
@@ -180,7 +178,7 @@ useEffect(() => {
           </div>
           <div>
             <h2 className="text-xl md:text-2xl font-bold font-serif text-white mb-1.5">
-              {watch("name") || "User"}
+              {watch("name") || t.guestUser}
             </h2>
             <p className="text-xs text-[#A89060] mb-2">
               {watch("email")} · {watch("state")}
@@ -263,7 +261,7 @@ useEffect(() => {
               <input
                 className={`input ${errors.phone ? "border-red-400" : ""}`}
                 type="tel"
-                placeholder="+91 XXXXXXXXXX"
+                placeholder={t.phonePlaceholder}
                 {...register("phone")}
               />
               {errors.phone && (

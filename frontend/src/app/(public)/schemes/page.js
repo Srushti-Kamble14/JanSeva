@@ -76,6 +76,8 @@ export default function SchemesPage() {
           <button
             className="absolute right-4 text-[#A89060] hover:text-[#D4A017] transition-colors cursor-pointer"
             onClick={() => setSearch("")}
+            title={t.clearSearch}
+            aria-label={t.clearSearch}
           >
             ✕
           </button>

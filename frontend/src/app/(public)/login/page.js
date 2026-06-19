@@ -18,8 +18,8 @@ export default function LoginPage() {
   const t = translations[language] || translations.en
 
   const loginSchema = z.object({
-    email: z.string().min(1, t.emailRequired || 'Email is required').email(t.invalidEmail || 'Invalid email address'),
-    password: z.string().min(6, t.passwordMin6 || 'Password must be at least 6 characters'),
+    email: z.string().min(1, t.emailRequired).email(t.invalidEmail),
+    password: z.string().min(6, t.passwordMin6),
     rememberMe: z.boolean().optional(),
   })
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
             <input
               className={`input ${errors.email ? 'border-red-400' : ''}`}
               type="email"
-              placeholder="you@example.com"
+              placeholder={t.emailPlaceholder}
               {...register('email')}
             />
             {errors.email && <p className="text-red-400 text-[10px] mt-1 font-medium">{errors.email.message}</p>}
@@ -93,12 +93,14 @@ export default function LoginPage() {
                 className={`input pr-10 ${errors.password ? 'border-red-400' : ''}`}
                 type={showPw ? 'text' : 'password'}
                 placeholder={t.enterPassword}
+                title={showPw ? t.hidePassword : t.showPassword}
                 {...register('password')}
               />
               <button
                 type="button"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-base select-none cursor-pointer text-[#A89060] hover:text-[#D4A017]"
                 onClick={() => setShowPw(s => !s)}
+                title={showPw ? t.hidePassword : t.showPassword}
               >
                 {showPw ? '🙈' : '👁'}
               </button>

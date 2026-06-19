@@ -11,9 +11,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const t =
-  translations[language] ||
-  translations.en;
+  const t = translations[language] || translations.en;
 
   const NAV = [
   { to: '/dashboard', icon: '🏠', label: t.dashboard },

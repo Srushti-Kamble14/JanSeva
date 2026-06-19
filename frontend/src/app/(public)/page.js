@@ -25,10 +25,7 @@ const HOME_CATEGORIES = [
 
 export default function Home() {
   const { language } = useApp();
-
-  const t =
-    translations[language] ||
-    translations.en;
+  const t = translations[language] || translations.en;
 
   return (
     <div className="min-h-screen flex flex-col font-sans">

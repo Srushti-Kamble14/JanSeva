@@ -374,6 +374,8 @@ const toggleVoice = () => {
               <button 
                 className="w-9 h-9 rounded-full bg-[#D4A017] hover:bg-[#8B6914] text-[#0A0A0A] flex items-center justify-center text-sm transition-all active:scale-90 cursor-pointer shadow-sm"
                 onClick={handleSend}
+                title={t.sendMessage}
+                aria-label={t.sendMessage}
               >
                 ➤
               </button>

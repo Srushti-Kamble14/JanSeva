@@ -61,7 +61,14 @@ export default function VoicePage() {
       <h1 className="text-3xl font-bold font-serif mb-2 text-white">{t.voiceAssistant}</h1>
       <p className="text-sm text-[#A89060] mb-12">{t.voicePageSubtitle}</p>
 
-      <div className="relative flex items-center justify-center mb-8 cursor-pointer" onClick={toggle}>
+      <div
+        className="relative flex items-center justify-center mb-8 cursor-pointer"
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        title={t.tapToSpeak}
+        aria-label={t.tapToSpeak}
+      >
         <motion.div
           animate={state === 'listening' ? { scale: [1, 1.3, 1] } : { scale: 1 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}

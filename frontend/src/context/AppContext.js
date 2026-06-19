@@ -1,8 +1,10 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useCallback, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { SUPPORTED_LANGUAGES } from '@/utils/translations'
 const AppContext = createContext(null)
+const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map((item) => item.code)
 
 
 export function AppProvider({ children }) {
@@ -48,11 +50,19 @@ export function AppProvider({ children }) {
   }
 };
 
-useEffect(() => {
-  const savedLanguage =
-    localStorage.getItem("language");
+const changeLanguage = useCallback((nextLanguage) => {
+  const languageCode = SUPPORTED_LANGUAGE_CODES.includes(nextLanguage)
+    ? nextLanguage
+    : "en";
 
-  if (savedLanguage) {
+  setLanguage(languageCode);
+  localStorage.setItem("language", languageCode);
+}, []);
+
+useEffect(() => {
+  const savedLanguage = localStorage.getItem("language");
+
+  if (savedLanguage && SUPPORTED_LANGUAGE_CODES.includes(savedLanguage)) {
     queueMicrotask(() => setLanguage(savedLanguage));
   }
 }, []);
@@ -114,14 +124,12 @@ if (saved) {
     localStorage.removeItem('user')
   }
 
-  console.log("savedSchemes:", savedSchemes);
-console.log("count:", savedSchemes.length);
   return (
   <AppContext.Provider value={{
   theme,
   toggleTheme,
   language,
-  setLanguage,
+  setLanguage: changeLanguage,
   user,
   setUser,
   fetchProfile,
