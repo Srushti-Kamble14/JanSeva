@@ -27,7 +27,7 @@ const profileSchema = z.object({
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, savedSchemes, toggleSave, language, setLanguage } = useApp();
+  const { user, savedSchemes, toggleSave, language, setLanguage, fetchProfile: refreshProfile } = useApp();
   const t = translations[language] || translations.en;
   const [savedStatus, setSavedStatus] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
@@ -161,6 +161,7 @@ useEffect(() => {
         },
       });
 
+      await refreshProfile();
       setSavedStatus(true);
     } catch (error) {
       setErrorMsg(error?.response?.data?.message || t.failedSaveProfile);

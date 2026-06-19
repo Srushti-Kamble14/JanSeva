@@ -28,9 +28,19 @@ export function AppProvider({ children }) {
       }
     );
 
+    const profile = res.data.profile;
+
     setUser({
-      fullName: res.data.profile.user.fullName,
-      email: res.data.profile.user.email,
+      ...profile,
+      ...profile.user,
+      fullName: profile.user?.fullName || "",
+      email: profile.user?.email || "",
+      phone: profile.phone || "",
+      dob: profile.dob || "",
+      preferredLanguage: profile.preferredLanguage || "",
+      category: profile.category || "",
+      state: profile.state || "",
+      annualIncome: profile.annualIncome || "",
     });
 
   } catch (error) {
@@ -43,9 +53,9 @@ useEffect(() => {
     localStorage.getItem("language");
 
   if (savedLanguage) {
-    setLanguage(savedLanguage);
+    queueMicrotask(() => setLanguage(savedLanguage));
   }
-}, [language]);
+}, []);
 
   useEffect(() => {
   const saved = localStorage.getItem("savedSchemes");
@@ -57,7 +67,7 @@ if (saved) {
     id => typeof id === "string"
   );
 
-  setSavedSchemes(cleaned);
+  queueMicrotask(() => setSavedSchemes(cleaned));
 
   localStorage.setItem(
     "savedSchemes",
@@ -65,7 +75,7 @@ if (saved) {
   );
 }
 
-  fetchProfile()
+  queueMicrotask(() => fetchProfile())
 }, [])
 
   useEffect(() => {
@@ -99,6 +109,7 @@ if (saved) {
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem('accessToken')
     localStorage.removeItem('token')
     localStorage.removeItem('user')
   }

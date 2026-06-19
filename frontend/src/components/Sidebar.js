@@ -28,6 +28,10 @@ const ACCOUNT = [
   { to: '/admin', icon: '⚙️', label: t.adminPanel },
 ];
 
+  const displayName = user?.fullName || user?.name || t.guestUser;
+  const displayEmail = user?.email || "";
+ 
+
   const handleLogout = () => {
     logout();
     router.push("/");
@@ -46,18 +50,22 @@ const ACCOUNT = [
       }`}
     >
       {/* User Section */}
-      <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.02] border border-[rgba(212,160,23,0.08)] mb-6 shadow-sm">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A017] to-[#8B6914] flex items-center justify-center text-[#0A0A0A] font-bold text-base flex-shrink-0">
-          {(user?.fullName || "A")[0].toUpperCase()}
-        </div>
-        <div className="overflow-hidden">
-          <div className="text-sm font-semibold truncate leading-tight">
-            {user?.fullName || t.guestUser}
+      <div className="p-2.5 rounded-xl bg-white/[0.02] border border-[rgba(212,160,23,0.08)] mb-6 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A017] to-[#8B6914] flex items-center justify-center text-[#0A0A0A] font-bold text-base flex-shrink-0">
+            {(displayName || "A")[0].toUpperCase()}
           </div>
-          <div className="text-xs text-[#A89060] truncate">
-            {user?.email || "arjun@gmail.com"}
+          <div className="overflow-hidden">
+            <div className="text-sm font-semibold truncate leading-tight">
+              {displayName}
+            </div>
+            <div className="text-xs text-[#A89060] truncate">
+              {displayEmail || t.profile}
+            </div>
           </div>
         </div>
+
+       
       </div>
 
       {/* Main Items */}

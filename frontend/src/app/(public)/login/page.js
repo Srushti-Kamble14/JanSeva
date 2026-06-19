@@ -12,7 +12,7 @@ import { translations } from '@/utils/translations'
 
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false)
-  const { language } = useApp()
+  const { language, fetchProfile } = useApp()
   const router = useRouter()
   const [errorMsg, setErrorMsg] = useState('')
   const t = translations[language] || translations.en
@@ -50,6 +50,7 @@ export default function LoginPage() {
       localStorage.setItem("refreshToken", res.data.refreshToken)
       localStorage.setItem("user", JSON.stringify(res.data.user))
 
+      await fetchProfile()
       router.push("/dashboard")
     } catch (error) {
       console.error(error)
