@@ -11,7 +11,8 @@ export const chatWithAi = async (req, res) => {
     const { message,language } = req.body;
 //     console.log("BODY:", req.body);
 // console.log("Language:", language);
-    
+
+
     const languageMap = {
   en: "English",
   hi: "Hindi",
@@ -36,14 +37,62 @@ export const chatWithAi = async (req, res) => {
       slug: scheme.fields.slug,
       level: scheme.fields.level,
     }));
+if (!schemeData.length) {
+  return res.json({
+    success: true,
+    reply: "No matching schemes found.",
+    schemes: [],
+  });
+}
+  
+if (language !== "en") {
+  const translationResponse =
+    await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: `
+Translate all values in this JSON to ${
+  languageMap[language]
+}.
 
-    if (!schemeData.length) {
-      return res.json({
-        success: true,
-        reply: "No matching schemes found.",
-        schemes: [],
-      });
-    }
+Rules:
+- Keep the JSON structure unchanged.
+- Do not translate id.
+- Do not translate slug.
+- Translate only name, description and level.
+- Return valid JSON only.
+- No markdown.
+- No explanations.
+`
+        },
+        {
+          role: "user",
+          content: JSON.stringify(schemeData)
+        }
+      ]
+    });
+
+  try {
+    const translatedText =
+      translationResponse.choices[0].message.content;
+
+    const cleaned = translatedText
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const translatedSchemes =
+      JSON.parse(cleaned);
+
+    schemeData.length = 0;
+    schemeData.push(...translatedSchemes);
+  
+  } catch (err) {
+    console.log("Translation Parse Error:", err);
+  }
+}   
 
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
@@ -88,6 +137,7 @@ ${JSON.stringify(schemeData, null, 2)}
     .replace(/#/g, "");
 
     // console.log("AI Reply:", reply);
+
 
     return res.json({
       success: true,
