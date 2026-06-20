@@ -54,6 +54,7 @@ export const getAllSchemes = async (req, res) => {
     name: scheme.fields.schemeName,
     description: scheme.fields.briefDescription,
     level: scheme.fields.level,
+      category: scheme.fields.schemeCategory,
   }));
 
  const translatedSchemes = [];
@@ -120,6 +121,10 @@ Rules:
 
   schemes[index].fields.level =
     translated.level || schemes[index].fields.level;
+
+    schemes[index].fields.schemeCategory =
+  translated.category ||
+  schemes[index].fields.schemeCategory;
 });
 
   console.log(
