@@ -14,9 +14,15 @@ export default function SchemesPage() {
   const [schemes, setSchemes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  
+
   const fetchSchemes = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/schemes");
+       console.log("Frontend Language:", language);
+
+      const res = await axios.get(
+  `http://localhost:5000/api/schemes?language=${language}`
+)
 
       setSchemes(res.data.data.data.hits.items);
     } catch (error) {
@@ -37,9 +43,9 @@ export default function SchemesPage() {
   );
 });
 
-  useEffect(() => {
-    fetchSchemes();
-  }, []);
+useEffect(() => {
+  fetchSchemes();
+}, [language]);
 
   if (loading) {
     return (
