@@ -3,6 +3,7 @@ import path from "path";
 import { voiceMap } from "../utils/voiceMap.js";
 import fs from "fs";
 export const generateSpeech = async (req, res) => {
+  console.log("TTS ROUTE HIT");
   try {
     const { text, language } = req.body;
 
@@ -44,11 +45,15 @@ fs.writeFileSync(
 
 const command = `py tts/generate.py "${tempJson}"`;
 exec(command, (error, stdout, stderr) => {
+    console.log("STDOUT:", stdout);
+  console.log("STDERR:", stderr);
+
   if (fs.existsSync(tempJson)) {
     fs.unlinkSync(tempJson);
   }
 
   if (error) {
+     console.error("TTS ERROR:", error);
     return res.status(500).json({
       success: false,
       message: "TTS generation failed",
