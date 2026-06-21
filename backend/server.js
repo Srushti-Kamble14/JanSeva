@@ -65,6 +65,10 @@ app.use("/api/schemes", schemesRoutes);
 app.use("/api/ai",aiRoutes);
 app.use("/api/tts", ttsRoutes);
 
+app.get("/", (req, res) => {
+  res.send("JanSeva Backend Running 🚀");
+});
+
 app.listen(5000, () => {
   console.log("Server running on 5000");
 });
