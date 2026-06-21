@@ -23,7 +23,6 @@ export default function Sidebar() {
 
 const ACCOUNT = [
   { to: '/profile', icon: '👤', label: t.profile },
-  { to: '/admin', icon: '⚙️', label: t.adminPanel },
 ];
 
   const displayName = user?.fullName || user?.name || t.guestUser;
