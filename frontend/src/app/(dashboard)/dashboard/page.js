@@ -6,6 +6,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { translations } from "@/utils/translations";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function DashboardPage() {
   const { savedSchemes, language } = useApp();
   const t = translations[language] || translations.en;
@@ -19,7 +21,7 @@ export default function DashboardPage() {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const res = await axios.get("http://localhost:5000/api/users/profile", {
+        const res = await axios.get(`${BACKEND_URL}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -27,7 +29,7 @@ export default function DashboardPage() {
 
         setProfile(res.data.profile);
 
-        const schemesRes = await axios.get("http://localhost:5000/api/schemes");
+        const schemesRes = await axios.get(`${BACKEND_URL}/api/schemes`);
         const allSchemes = schemesRes.data.data.data.hits.items;
 
         setRecommendedSchemes(allSchemes.slice(0, 5));

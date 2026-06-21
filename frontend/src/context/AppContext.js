@@ -5,6 +5,7 @@ import axios from 'axios'
 import { SUPPORTED_LANGUAGES } from '@/utils/translations'
 const AppContext = createContext(null)
 const SUPPORTED_LANGUAGE_CODES = SUPPORTED_LANGUAGES.map((item) => item.code)
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 
 export function AppProvider({ children }) {
@@ -22,7 +23,7 @@ export function AppProvider({ children }) {
     if (!token) return;
 
     const res = await axios.get(
-      "http://localhost:5000/api/users/profile",
+      `${BACKEND_URL}/api/users/profile`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

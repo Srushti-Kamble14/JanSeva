@@ -6,6 +6,8 @@ import { useApp } from "@/context/AppContext";
 import axios from "axios";
 import { translations } from "@/utils/translations";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function SchemesPage() {
   const { savedSchemes, toggleSave, language } = useApp();
   const t = translations[language] || translations.en;
@@ -21,7 +23,7 @@ export default function SchemesPage() {
        console.log("Frontend Language:", language);
 
       const res = await axios.get(
-  `http://localhost:5000/api/schemes?language=${language}`
+  `${BACKEND_URL}/api/schemes?language=${language}`
 )
 
       setSchemes(res.data.data.data.hits.items);

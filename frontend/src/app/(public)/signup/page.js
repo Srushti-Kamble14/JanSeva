@@ -10,6 +10,8 @@ import axios from 'axios'
 import { useApp } from '@/context/AppContext'
 import { translations } from '@/utils/translations'
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
 export default function SignupPage() {
   const [showPw, setShowPw] = useState(false)
   const { language } = useApp()
@@ -40,7 +42,7 @@ export default function SignupPage() {
     setErrorMsg('')
     try {
       await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${BACKEND_URL}/api/users/register`,
         {
           fullName: data.fullName,
           email: data.email,

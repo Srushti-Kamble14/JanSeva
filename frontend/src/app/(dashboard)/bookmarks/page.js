@@ -5,6 +5,8 @@ import axios from "axios";
 import { useApp } from "@/context/AppContext";
 import { translations } from "@/utils/translations";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function SavedSchemesPage() {
   const { savedSchemes, toggleSave, language } = useApp();
   const t = translations[language] || translations.en;
@@ -19,7 +21,7 @@ export default function SavedSchemesPage() {
   const fetchSavedSchemes = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/schemes"
+        `${BACKEND_URL}/api/schemes`
       );
 
       const allSchemes =

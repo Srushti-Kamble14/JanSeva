@@ -10,6 +10,8 @@ import axios from "axios";
 import { useApp } from "@/context/AppContext";
 import { translations } from "@/utils/translations";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function ProfilePage() {
   const router = useRouter();
   const { user, savedSchemes, toggleSave, language, setLanguage, fetchProfile: refreshProfile } = useApp();
@@ -35,7 +37,7 @@ export default function ProfilePage() {
   const fetchSavedSchemes = async () => {
   try {
     const res = await axios.get(
-      "http://localhost:5000/api/schemes"
+      `${BACKEND_URL}/api/schemes`
     );
 
     const allSchemes =
@@ -94,7 +96,7 @@ useEffect(() => {
     try {
       const token = localStorage.getItem("accessToken");
 
-      const res = await axios.get("http://localhost:5000/api/users/profile", {
+      const res = await axios.get(`${BACKEND_URL}/api/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +155,7 @@ useEffect(() => {
        annualIncome: Number(data.income),
       };
 
-      await axios.post("http://localhost:5000/api/users/profile", payload, {
+      await axios.post(`${BACKEND_URL}/api/users/profile`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

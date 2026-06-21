@@ -10,6 +10,8 @@ import axios from 'axios'
 import { useApp } from '@/context/AppContext'
 import { translations } from '@/utils/translations'
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+
 export default function LoginPage() {
   const [showPw, setShowPw] = useState(false)
   const { language, fetchProfile } = useApp()
@@ -39,7 +41,7 @@ export default function LoginPage() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${BACKEND_URL}/api/users/login`,
         {
           email: data.email,
           password: data.password,

@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import axios from "axios";
 import { translations } from "@/utils/translations";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const SUGGESTED_KEYS = [
   'quickScholarships',
   'quickFarmers',
@@ -88,7 +90,7 @@ localStorage.setItem(
 
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/ai/chat",
+      `${BACKEND_URL}/api/ai/chat`,
       {
         message: text,
           language,
@@ -103,7 +105,7 @@ localStorage.setItem(
 if (voiceEnabled) {
   try {
     const ttsRes = await axios.post(
-      "http://localhost:5000/api/tts/speak",
+      `${BACKEND_URL}/api/tts/speak`,
       {
         text: res.data.reply,
         language,
@@ -116,7 +118,7 @@ if (voiceEnabled) {
 }
 
 const audio = new Audio(
-  `http://localhost:5000${ttsRes.data.audioUrl}`
+  `${BACKEND_URL}${ttsRes.data.audioUrl}`
 );
 
 audioRef.current = audio;
