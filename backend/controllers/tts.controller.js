@@ -43,17 +43,22 @@ fs.writeFileSync(
   "utf8"
 );
 
-const command = `python3 tts/generate.py "${tempJson}"`;
+const pythonCmd =
+  process.platform === "win32"
+    ? "py"
+    : "python3";
+
+const command =
+  `${pythonCmd} tts/generate.py "${tempJson}"`;
 exec(command, (error, stdout, stderr) => {
-    console.log("STDOUT:", stdout);
-  console.log("STDERR:", stderr);
+   
 
   if (fs.existsSync(tempJson)) {
     fs.unlinkSync(tempJson);
   }
 
   if (error) {
-     console.error("TTS ERROR:", error);
+    //  console.error("TTS ERROR:", error);
     return res.status(500).json({
       success: false,
       message: "TTS generation failed",
