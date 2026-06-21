@@ -16,13 +16,13 @@ export default function SavedSchemesPage() {
 
   useEffect(() => {
     fetchSavedSchemes();
-  }, []);
+  }, [savedSchemes, language]);
 
   const fetchSavedSchemes = async () => {
     try {
       const res = await axios.get(
-        `${BACKEND_URL}/api/schemes`
-      );
+  `${BACKEND_URL}/api/schemes?language=${language}`
+);
 
       const allSchemes =
         res.data.data.data.hits.items;

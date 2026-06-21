@@ -18,7 +18,7 @@ export default function Sidebar() {
   { to: '/chat', icon: '💬', label: t.aiAssistant },
   { to: '/schemes', icon: '📋', label: t.allSchemes },
   { to: '/voice', icon: '🎙️', label: t.voiceAssistant },
-  { to: '/saved', icon: '⭐', label: t.savedSchemes },
+  { to: '/bookmarks', icon: '⭐', label: t.savedSchemes },
 ];
 
 const ACCOUNT = [
