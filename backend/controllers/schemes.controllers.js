@@ -34,7 +34,7 @@ export const getAllSchemes = async (req, res) => {
           keyword: "",
           sort: "",
           from: 0,
-          size: 10,
+          size: 20,
         },
         headers: {
           "x-api-key": process.env.MYSCHEME_API_KEY,
