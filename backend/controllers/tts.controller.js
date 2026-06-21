@@ -43,7 +43,7 @@ fs.writeFileSync(
   "utf8"
 );
 
-const command = `py tts/generate.py "${tempJson}"`;
+const command = `python3 tts/generate.py "${tempJson}"`;
 exec(command, (error, stdout, stderr) => {
     console.log("STDOUT:", stdout);
   console.log("STDERR:", stderr);
