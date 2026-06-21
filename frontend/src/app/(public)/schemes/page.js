@@ -58,12 +58,12 @@ useEffect(() => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 font-sans">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 font-sans">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold font-serif mb-2 text-white">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold font-serif mb-2 text-white break-words">
           {t.governmentSchemes}
         </h1>
-        <p className="text-sm md:text-base text-[#A89060]">
+        <p className="text-sm md:text-base text-[#A89060] break-words">
           {t.schemesSubtitle}
         </p>
       </div>
@@ -96,7 +96,7 @@ useEffect(() => {
 
       {/* Schemes Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-[rgba(212,160,23,0.15)] rounded-2xl bg-white/[0.01]">
+        <div className="text-center py-14 sm:py-16 px-4 border border-dashed border-[rgba(212,160,23,0.15)] rounded-2xl bg-white/[0.01]">
           <div className="text-4xl mb-3">🔍</div>
           <h3 className="font-serif text-lg font-semibold text-white">
             {t.noSchemesFound}
@@ -114,15 +114,15 @@ useEffect(() => {
                 key={s.id}
                 whileHover={{ y: -4, borderColor: "rgba(212,160,23,0.45)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="flex flex-col justify-between p-6 rounded-2xl bg-[#111111] border border-[rgba(212,160,23,0.18)] shadow-md relative group cursor-pointer"
+                className="min-w-0 flex flex-col justify-between p-4 sm:p-6 rounded-2xl bg-[#111111] border border-[rgba(212,160,23,0.18)] shadow-md relative group cursor-pointer"
               >
                 <div>
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="w-8 h-8 rounded-xl bg-[rgba(212,160,23,0.06)] flex items-center justify-center text-1.5xl">
                       🏛️
                     </div>
                     <button
-                      className={`text-xl transition-transform duration-200 active:scale-95 cursor-pointer ${
+                      className={`min-h-11 min-w-11 text-xl transition-transform duration-200 active:scale-95 cursor-pointer ${
                         isSaved
                           ? "text-[#D4A017]"
                           : "text-[#6B5A3A] hover:text-[#D4A017]"
@@ -138,26 +138,26 @@ useEffect(() => {
                     </button>
                   </div>
 
-                  <div className="text-[10px] font-bold tracking-wider uppercase text-[#8B6914] mb-1.5">
+                  <div className="text-[10px] font-bold tracking-wider uppercase text-[#8B6914] mb-1.5 break-words">
                     {s.fields.schemeCategory?.join(" • ")}
                   </div>
-                  <h3 className="font-serif text-base font-semibold text-[#F0E6C8] mb-2 leading-snug group-hover:text-[#F2C94C] transition-colors">
+                  <h3 className="font-serif text-base font-semibold text-[#F0E6C8] mb-2 leading-snug break-words group-hover:text-[#F2C94C] transition-colors">
                     {s.fields.schemeName}
                   </h3>
-                  <p className="text-xs text-[#A89060] leading-relaxed mb-6 truncate-3-lines">
+                  <p className="text-xs text-[#A89060] leading-relaxed mb-6 break-words">
                     {s.fields.briefDescription}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-[rgba(212,160,23,0.08)] pt-4 mt-auto">
-                  <span className="text-xs font-semibold text-[#6B5A3A]">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[rgba(212,160,23,0.08)] pt-4 mt-auto">
+                  <span className="min-w-0 text-xs font-semibold text-[#6B5A3A] break-words">
                     👤 {s.fields.level}
                   </span>
                   <a
                     href={`https://www.myscheme.gov.in/schemes/${s.fields.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-apply text-[11px] font-sans font-medium py-1.5 px-4 rounded-lg"
+                    className="btn-apply min-h-11 text-[11px] font-sans font-medium py-1.5 px-4 rounded-lg"
                   >
                     {t.view}
                   </a>

@@ -4,7 +4,7 @@ export default function PublicLayout({ children }) {
   return (
     <>
       <Navbar />
-      <main className="pt-16 min-h-screen">
+      <main className="pt-16 min-h-screen overflow-x-hidden">
         {children}
       </main>
     </>

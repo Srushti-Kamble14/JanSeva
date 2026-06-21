@@ -50,15 +50,15 @@ export default function DashboardPage() {
   }, [t.justNow, t.relevantScheme]);
 
   return (
-    <div className="space-y-8 font-sans">
+    <div className="w-full min-w-0 space-y-6 sm:space-y-8 font-sans">
       <div className="mb-6">
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-1.5">
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-1.5 break-words">
           {t.goodMorning}, {name}
         </h2>
-        <p className="text-sm text-[#A89060]">{t.dashboardSubtitle}</p>
+        <p className="text-sm text-[#A89060] break-words">{t.dashboardSubtitle}</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: t.savedSchemes, value: savedSchemes.length, sub: t.thisWeek },
           { label: t.aiChats, value: 47, sub: t.past30Days },
@@ -77,9 +77,9 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">
+        <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
+            <h3 className="font-serif text-lg font-semibold text-white break-words">
               {t.recommendedSchemes}
             </h3>
             <Link href="/schemes" className="text-xs font-semibold text-[#D4A017] hover:underline">
@@ -93,7 +93,7 @@ export default function DashboardPage() {
                 href={`https://www.myscheme.gov.in/schemes/${scheme.fields.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
+                className="flex min-w-0 items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-[20px]">
                   📋
@@ -106,7 +106,7 @@ export default function DashboardPage() {
                     {scheme.fields.level}
                   </div>
                 </div>
-                <span className="px-2 py-0.5 rounded bg-[rgba(212,160,23,0.08)] border border-[rgba(212,160,23,0.15)] text-[9px] text-[#F2C94C] font-semibold">
+                <span className="hidden sm:inline-flex flex-shrink-0 px-2 py-0.5 rounded bg-[rgba(212,160,23,0.08)] border border-[rgba(212,160,23,0.15)] text-[9px] text-[#F2C94C] font-semibold">
                   {t.recommended}
                 </span>
               </a>
@@ -114,9 +114,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">{t.notifications}</h3>
+        <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
+            <h3 className="font-serif text-lg font-semibold text-white break-words">{t.notifications}</h3>
             <span className="px-2.5 py-0.5 rounded-full bg-[rgba(212,160,23,0.1)] text-[#D4A017] text-[10px] font-bold">
               {notifications.length} {t.newLabel}
             </span>
@@ -132,7 +132,7 @@ export default function DashboardPage() {
               >
                 <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${n.unread ? "bg-[#D4A017]" : "bg-transparent"}`} />
                 <div className="flex-1">
-                  <div className="text-[#F0E6C8] font-medium">{n.text}</div>
+                  <div className="text-[#F0E6C8] font-medium break-words">{n.text}</div>
                   <div className="text-[10px] text-[#6B5A3A] mt-0.5">{n.time}</div>
                 </div>
               </a>
@@ -140,9 +140,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">{t.recentAiChats}</h3>
+        <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
+            <h3 className="font-serif text-lg font-semibold text-white break-words">{t.recentAiChats}</h3>
             <Link href="/chat" className="text-xs font-semibold text-[#D4A017] hover:underline">
               {t.openChat}
             </Link>
@@ -156,12 +156,12 @@ export default function DashboardPage() {
               <Link
                 key={c.q}
                 href="/chat"
-                className="flex items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
+                className="flex min-w-0 items-center gap-3.5 p-3 rounded-xl bg-white/[0.01] border border-[rgba(212,160,23,0.06)] hover:bg-[rgba(212,160,23,0.03)] transition-colors cursor-pointer"
               >
                 <div className="w-9 h-9 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-base">
                   💬
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="text-xs font-bold text-[#F0E6C8] truncate">{c.q}</div>
                   <div className="text-[10px] text-[#A89060]">{c.when}</div>
                 </div>
@@ -170,9 +170,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
-            <h3 className="font-serif text-lg font-semibold text-white">{t.profileSummary}</h3>
+        <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-md flex flex-col justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-[rgba(212,160,23,0.08)]">
+            <h3 className="font-serif text-lg font-semibold text-white break-words">{t.profileSummary}</h3>
             <Link href="/profile" className="text-xs font-semibold text-[#D4A017] hover:underline">
               {t.edit}
             </Link>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
             ].map((r) => (
               <div
                 key={r.k}
-                className="flex justify-between items-center text-xs leading-none py-1 border-b border-white/[0.02] last:border-0"
+                className="flex flex-wrap justify-between gap-2 items-center text-xs leading-snug py-1 border-b border-white/[0.02] last:border-0"
               >
                 <span className="text-[#A89060]">{r.k}</span>
                 <span className={`font-semibold ${r.gold ? "text-[#F2C94C]" : "text-[#F0E6C8]"}`}>

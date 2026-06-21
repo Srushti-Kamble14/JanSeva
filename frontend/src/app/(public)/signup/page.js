@@ -58,14 +58,14 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-6 py-12 font-sans">
-      <div className="w-full max-w-md bg-[#111111] border border-[rgba(212,160,23,0.18)] rounded-2xl p-8 shadow-xl">
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 font-sans">
+      <div className="w-full max-w-md bg-[#111111] border border-[rgba(212,160,23,0.18)] rounded-2xl p-5 sm:p-8 shadow-xl">
         <Link href="/" className="inline-block text-xs font-semibold text-[#A89060] hover:text-[#D4A017] transition-colors mb-6">
           {t.backToHome}
         </Link>
 
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">{t.createAccount}</h2>
-        <p className="text-xs text-[#A89060] mb-6">{t.signupSubtitle}</p>
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-white mb-2 leading-tight break-words">{t.createAccount}</h2>
+        <p className="text-xs text-[#A89060] mb-6 break-words">{t.signupSubtitle}</p>
 
         {errorMsg && (
           <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-xs text-red-400 font-semibold mb-6">
@@ -129,11 +129,11 @@ export default function SignupPage() {
 
         <div className="flex items-center justify-between gap-3 my-6">
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
-          <p className="text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold">{t.orContinueWith}</p>
+          <p className="text-center text-[10px] uppercase tracking-wider text-[#6B5A3A] font-bold break-words">{t.orContinueWith}</p>
           <span className="flex-1 h-[0.5px] bg-[rgba(212,160,23,0.1)]" />
         </div>
 
-        <button className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 bg-white/[0.02] border border-[rgba(212,160,23,0.15)] hover:bg-[rgba(212,160,23,0.06)] hover:border-[rgba(212,160,23,0.35)] rounded-xl text-xs font-semibold text-[#F0E6C8] transition-all cursor-pointer shadow-sm">
+        <button className="w-full min-h-11 flex items-center justify-center gap-2.5 py-2.5 px-4 bg-white/[0.02] border border-[rgba(212,160,23,0.15)] hover:bg-[rgba(212,160,23,0.06)] hover:border-[rgba(212,160,23,0.35)] rounded-xl text-xs font-semibold text-[#F0E6C8] transition-all cursor-pointer shadow-sm">
           <svg width="16" height="16" viewBox="0 0 18 18" className="flex-shrink-0">
             <path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.79-.15-1.18z" fill="#4285F4"/>
             <path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17z" fill="#34A853"/>

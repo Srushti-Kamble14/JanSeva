@@ -40,7 +40,7 @@ const ACCOUNT = [
 
   return (
     <aside
-      className={`w-64 h-[calc(100vh-64px)] fixed top-16 left-0 hidden md:flex flex-col p-5 border-r font-sans transition-colors duration-300 ${
+      className={`w-64 h-[calc(100vh-64px)] fixed top-16 left-0 hidden md:flex flex-col overflow-y-auto p-5 border-r font-sans transition-colors duration-300 ${
         theme === "dark"
           ? "bg-[#0A0A0A]/40 border-[rgba(212,160,23,0.15)] text-[#F0E6C8]"
           : "bg-[#F8F4EC]/40 border-[rgba(139,105,20,0.15)] text-[#1A1208]"
@@ -52,7 +52,7 @@ const ACCOUNT = [
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4A017] to-[#8B6914] flex items-center justify-center text-[#0A0A0A] font-bold text-base flex-shrink-0">
             {(displayName || "A")[0].toUpperCase()}
           </div>
-          <div className="overflow-hidden">
+          <div className="min-w-0 overflow-hidden">
             <div className="text-sm font-semibold truncate leading-tight">
               {displayName}
             </div>
@@ -81,7 +81,7 @@ const ACCOUNT = [
             }`}
           >
             <span className="text-base">{l.icon}</span>
-            <span className="flex-1">{l.label}</span>
+            <span className="flex-1 min-w-0 break-words">{l.label}</span>
             {l.badge && (
               <span className="px-1.5 py-0.5 rounded-full bg-[#D4A017] text-[#0A0A0A] text-[10px] font-bold">
                 {l.badge}
@@ -107,7 +107,7 @@ const ACCOUNT = [
             }`}
           >
             <span className="text-base">{l.icon}</span>
-            <span>{l.label}</span>
+            <span className="min-w-0 break-words">{l.label}</span>
           </Link>
         ))}
       </div>
@@ -118,7 +118,7 @@ const ACCOUNT = [
       </div>
       <div className="flex items-center gap-3 px-3 py-2.5 text-sm text-[#A89060]">
         <span className="text-base">⭐</span>
-        <span>{savedSchemes.length} {t.savedSchemes}</span>
+        <span className="min-w-0 break-words">{savedSchemes.length} {t.savedSchemes}</span>
       </div>
 
       <div className="flex-1" />

@@ -25,8 +25,8 @@ export default function LangModal({ onClose }) {
         className="w-full max-w-md bg-[#111111] border border-[rgba(212,160,23,0.22)] rounded-2xl overflow-hidden shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 border-b border-[rgba(212,160,23,0.1)]">
-          <h3 className="font-serif text-xl font-bold text-[#D4A017]">{t.selectLanguage}</h3>
+        <div className="flex items-center justify-between gap-3 p-4 sm:p-5 border-b border-[rgba(212,160,23,0.1)]">
+          <h3 className="font-serif text-lg sm:text-xl font-bold text-[#D4A017] break-words">{t.selectLanguage}</h3>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-[rgba(212,160,23,0.05)] text-[#A89060] hover:bg-[rgba(212,160,23,0.2)] hover:text-[#D4A017] transition-colors text-base cursor-pointer"
@@ -41,7 +41,7 @@ export default function LangModal({ onClose }) {
           {SUPPORTED_LANGUAGES.map((item) => (
             <button
               key={item.code}
-              className={`w-full flex items-center justify-between p-3.5 rounded-xl cursor-pointer transition-all duration-200 ${
+              className={`w-full flex items-center justify-between gap-3 p-3.5 rounded-xl cursor-pointer transition-all duration-200 ${
                 language === item.code
                   ? "bg-[rgba(212,160,23,0.1)] border border-[rgba(212,160,23,0.45)] text-[#F2C94C]"
                   : "bg-white/[0.02] border border-transparent text-[#F0E6C8] hover:bg-[rgba(212,160,23,0.05)] hover:border-[rgba(212,160,23,0.2)]"
@@ -49,11 +49,11 @@ export default function LangModal({ onClose }) {
               onClick={() => pick(item)}
               type="button"
             >
-              <span className="flex items-center gap-3 text-left">
+              <span className="flex min-w-0 items-center gap-3 text-left">
                 <span className="text-2xl" aria-hidden="true">🇮🇳</span>
-                <span>
-                  <span className="block font-medium text-sm font-sans">{item.name}</span>
-                  <span className="block text-xs text-[#A89060]">{item.native}</span>
+                <span className="min-w-0">
+                  <span className="block break-words font-medium text-sm font-sans">{item.name}</span>
+                  <span className="block break-words text-xs text-[#A89060]">{item.native}</span>
                 </span>
               </span>
               {language === item.code && <span className="text-[#D4A017] font-bold text-sm">✓</span>}

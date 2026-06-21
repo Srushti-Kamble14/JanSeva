@@ -171,28 +171,28 @@ useEffect(() => {
   };
 
   return (
-    <div className="space-y-8 font-sans max-w-5xl mx-auto">
+    <div className="w-full min-w-0 space-y-6 sm:space-y-8 font-sans max-w-5xl mx-auto">
       {/* Profile Header Card */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-[#111111] border border-[rgba(212,160,23,0.18)] shadow-md">
-        <div className="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-4 sm:p-6 rounded-2xl bg-[#111111] border border-[rgba(212,160,23,0.18)] shadow-md">
+        <div className="flex min-w-0 flex-col md:flex-row items-center gap-5 text-center md:text-left">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4A017] to-[#8B6914] flex items-center justify-center text-[#0A0A0A] font-bold text-xl flex-shrink-0 shadow-md">
             {(watch("name") || "A")[0].toUpperCase()}
           </div>
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold font-serif text-white mb-1.5">
+          <div className="min-w-0">
+            <h2 className="text-xl md:text-2xl font-bold font-serif text-white mb-1.5 break-words">
               {watch("name") || t.guestUser}
             </h2>
-            <p className="text-xs text-[#A89060] mb-2">
+            <p className="text-xs text-[#A89060] mb-2 break-words">
               {watch("email")} · {watch("state")}
             </p>
-            <span className="px-3 py-1 rounded-full bg-[rgba(212,160,23,0.06)] border border-[rgba(212,160,23,0.15)] text-[10px] uppercase font-bold text-[#F2C94C]">
+            <span className="inline-flex max-w-full flex-wrap justify-center gap-1 px-3 py-1 rounded-full bg-[rgba(212,160,23,0.06)] border border-[rgba(212,160,23,0.15)] text-[10px] uppercase font-bold text-[#F2C94C] break-words">
               🎓 {watch("category")} · {watch("state")}
             </span>
           </div>
         </div>
         <button
           onClick={handleSubmit(onSubmit)}
-          className={`btn-gold !py-2.5 !px-6 text-sm font-semibold cursor-pointer shadow-md ${
+          className={`btn-gold !min-h-11 !w-full sm:!w-auto !py-2.5 !px-6 text-sm font-semibold cursor-pointer shadow-md ${
             savedStatus ? "opacity-80" : ""
           }`}
 
@@ -215,9 +215,9 @@ useEffect(() => {
         {/* Left Forms column */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="lg:col-span-2 p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4"
+          className="min-w-0 lg:col-span-2 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4"
         >
-          <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)]">
+          <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)] break-words">
             {t.personalInformation}
           </h3>
 
@@ -283,8 +283,8 @@ useEffect(() => {
         </form>
 
         {/* Right {t.preferences} column */}
-        <div className="p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4">
-          <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)]">
+        <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/40 border border-[rgba(212,160,23,0.18)] shadow-sm space-y-4">
+          <h3 className="font-serif text-lg font-bold text-white mb-2 pb-2 border-b border-[rgba(212,160,23,0.08)] break-words">
             {t.preferences}
           </h3>
 
@@ -344,8 +344,8 @@ useEffect(() => {
       </div>
 
       {/* Saved Schemes Section */}
-      <div className="p-6 rounded-2xl bg-[#111111]/30 border border-[rgba(212,160,23,0.12)] shadow-sm">
-        <h3 className="font-serif text-lg font-bold text-white mb-6 pb-2 border-b border-[rgba(212,160,23,0.08)]">
+      <div className="min-w-0 p-4 sm:p-6 rounded-2xl bg-[#111111]/30 border border-[rgba(212,160,23,0.12)] shadow-sm">
+        <h3 className="font-serif text-lg font-bold text-white mb-6 pb-2 border-b border-[rgba(212,160,23,0.08)] break-words">
           {t.savedSchemes}{" "}
           <span className="ml-1 px-2 py-0.5 rounded-full bg-[rgba(212,160,23,0.06)] text-xs text-[#D4A017]">
             {savedList.length}
@@ -361,35 +361,35 @@ useEffect(() => {
             {savedList.map((s) => (
               <div
                 key={s.id}
-                className="p-5 rounded-xl bg-[#111111] border border-[rgba(212,160,23,0.15)] flex flex-col justify-between shadow-sm"
+                className="min-w-0 p-4 sm:p-5 rounded-xl bg-[#111111] border border-[rgba(212,160,23,0.15)] flex flex-col justify-between shadow-sm"
               >
                 <div>
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="w-10 h-10 rounded-lg bg-[rgba(212,160,23,0.05)] flex items-center justify-center text-xl">
                      🛡️
                     </div>
                     <button
-                      className="text-[#D4A017] text-lg active:scale-95 cursor-pointer"
+                      className="min-h-11 min-w-11 text-[#D4A017] text-lg active:scale-95 cursor-pointer"
                       onClick={() => toggleSave(s.id)}
                     >
                       ⭐
                     </button>
                   </div>
 
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#A89060] mb-1 break-words">
                     {s.fields.level}
                   </div>
-                  <h4 className="font-serif text-sm font-semibold text-white mb-1.5 leading-snug">
+                  <h4 className="font-serif text-sm font-semibold text-white mb-1.5 leading-snug break-words">
                     {s.fields.schemeName
 }
                   </h4>
-                  <p className="text-xs text-[#A89060] line-clamp-2 mb-4 leading-relaxed">
+                  <p className="text-xs text-[#A89060] line-clamp-2 mb-4 leading-relaxed break-words">
                     {s.fields.briefDescription}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-white/[0.03] pt-3">
-                  <span className="text-[11px] text-[#6B5A3A]">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.03] pt-3">
+                  <span className="min-w-0 text-[11px] text-[#6B5A3A] break-words">
                     👤 {s.eligibility}
                   </span>
                   <a
