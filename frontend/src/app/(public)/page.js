@@ -72,10 +72,9 @@ export default function Home() {
           className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 rounded-2xl bg-white/[0.01] border border-[rgba(212,160,23,0.1)] backdrop-blur-sm shadow-xl"
         >
           {[
-            { num: '500+', label: t.governmentSchemes },
+            { num: '50+', label: t.governmentSchemes },
             { num: '10+', label: t.languages },
-            { num: '1.4M+', label: t.citizensHelped },
-            { num: '28', label: t.statesCovered },
+            { num: '10+', label: t.statesCovered },
           ].map(s => (
             <div key={s.label} className="flex flex-col items-center p-2">
               <div className="text-2xl md:text-3xl font-bold font-serif text-[#F2C94C] break-words">{s.num}</div>
