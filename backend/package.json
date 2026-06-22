@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node -r dotenv/config --experimental-json-modules server.js",
-    "dev": "nodemon --ignore public/audio/* --ignore *.mp3 --ignore tts-*.json -r dotenv/config --experimental-json-modules server.js"
+    "dev": "nodemon --ignore public/audio/* --ignore *.mp3 --ignore tts-*.json -r dotenv/config --experimental-json-modules server.js",
+     "postinstall": "prisma generate",
+  "build": "prisma generate"
   },
   "keywords": [
     "node"
