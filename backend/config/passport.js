@@ -37,6 +37,7 @@
 // );
 
 // export default passport;
+console.log("PASSPORT FILE LOADED");
 
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";

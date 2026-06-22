@@ -5,6 +5,8 @@ import passport from "passport";
 import { googleCallback } from "../controllers/auth.controllers.js";
 const router = express.Router();
 
+console.log("AUTH ROUTES LOADED");
+
 router.post("/register",registerUser)
 router.post("/login",loginUser);
 router.post("/profile",verifyJWT,setProfile);
