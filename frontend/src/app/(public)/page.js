@@ -69,7 +69,7 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 p-4 sm:p-6 rounded-2xl bg-white/[0.01] border border-[rgba(212,160,23,0.1)] backdrop-blur-sm shadow-xl"
+         className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6 rounded-2xl bg-white/[0.01] border border-[rgba(212,160,23,0.1)] backdrop-blur-sm shadow-xl"
         >
           {[
             { num: '50+', label: t.governmentSchemes },
