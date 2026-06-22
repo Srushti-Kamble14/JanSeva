@@ -11,12 +11,12 @@ router.post("/register",registerUser)
 router.post("/login",loginUser);
 router.post("/profile",verifyJWT,setProfile);
 router.get("/profile",verifyJWT,getProfile);
-router.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-  })
-);
+router.get("/google", (req, res, next) => {
+  console.log("GOOGLE ROUTE HIT");
+  next();
+}, passport.authenticate("google", {
+  scope: ["profile", "email"],
+}));
 
 router.get(
   "/google/callback",
