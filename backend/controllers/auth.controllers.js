@@ -56,6 +56,13 @@ export const loginUser = async(req,res)=>{
      const user = await prisma.user.findUnique({where : {email}});
  
      if(!user) return res.status(400).json({message:"User does not exist"});
+
+     if (!user.password) {
+  return res.status(400).json({
+    message:
+      "Please login using Google",
+  });
+}
  
      //check is password correct
      const isPasswordValid = await bcrypt.compare(password,user.password);
@@ -224,13 +231,87 @@ export const getProfile=async(req,res)=>{
     )
 
 
-    if(!profile){
-      return res.status(404).json({message:"Profile not found"})
-    }
+    // if(!profile){
+    //   return res.status(404).json({message:"Profile not found"})
+    // }
 
-    return res.status(200).json({message:"Profile fetched successfully", success:true,profile});
+    // return res.status(200).json({message:"Profile fetched successfully", success:true,profile});
+
+    if (!profile) {
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user.id,
+    },
+    select: {
+      fullName: true,
+      email: true,
+    },
+  });
+
+  return res.status(200).json({
+    success: true,
+    profile: {
+      user,
+      phone: "",
+      dob: null,
+      preferredLanguage: "ENGLISH",
+      category: "STUDENT",
+      state: "MAHARASHTRA",
+      annualIncome: 1,
+    },
+  });
+}
     
   } catch (error) {
    return res.status(500).json({message:"Failed to fetch profile",error:error.message}); 
   }
 }
+
+export const googleCallback = async (req, res) => {
+  try {
+
+    const user = req.user;
+
+    const accessToken = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+      }
+    );
+
+    const refreshToken = jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+      }
+    );
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        refreshToken,
+      },
+    });
+
+   res.redirect(
+  `${process.env.FRONTEND_URL}/auth/google-success?accessToken=${accessToken}`
+);
+
+  } catch (error) {
+    console.log(error);
+
+   res.redirect(
+  `${process.env.FRONTEND_URL}/login`
+);
+  }
+};

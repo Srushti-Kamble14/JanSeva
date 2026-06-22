@@ -10,7 +10,7 @@ import axios from "axios";
 import { useApp } from "@/context/AppContext";
 import { translations } from "@/utils/translations";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -258,7 +258,7 @@ useEffect(() => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                {t.phoneNumber}
+                {t.phoneNumber}*
               </label>
               <input
                 className={`input ${errors.phone ? "border-red-400" : ""}`}
