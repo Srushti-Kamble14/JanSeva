@@ -18,6 +18,12 @@ export default function DashboardPage() {
   const [chatCount, setChatCount] = useState(0);
 
   useEffect(() => {
+    
+        const history = JSON.parse(
+  localStorage.getItem("chatHistory") || "[]"
+);
+
+setChatCount(history.length);
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("accessToken");
@@ -45,11 +51,6 @@ export default function DashboardPage() {
           
         );
 
-        const history = JSON.parse(
-  localStorage.getItem("chatHistory") || "[]"
-);
-
-setChatCount(history.length);
       } catch (error) {
         console.error(error);
       }
@@ -81,7 +82,7 @@ const matchedCount = recommendedSchemes.length;
 },
 {
   label: t.applied,
-  value: appliedSchemes.length,
+  value: 0,
   sub: t.awaitingResponse
 },
 {
