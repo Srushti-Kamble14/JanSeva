@@ -61,9 +61,9 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: t.savedSchemes, value: savedSchemes.length, sub: t.thisWeek },
-          { label: t.aiChats, value: 47, sub: t.past30Days },
-          { label: t.applied, value: 3, sub: t.awaitingResponse },
-          { label: t.matched, value: 28, sub: t.eligibleSchemes },
+          { label: t.aiChats, value: 0, sub: t.past30Days },
+          { label: t.applied, value: 0, sub: t.awaitingResponse },
+          { label: t.matched, value: 0, sub: t.eligibleSchemes },
         ].map((m) => (
           <div
             key={m.label}

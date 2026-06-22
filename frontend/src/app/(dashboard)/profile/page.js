@@ -275,7 +275,7 @@ useEffect(() => {
 
             <div>
               <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-                {t.dateOfBirth}
+                {t.dateOfBirth}*
               </label>
               <input className="input" type="date" {...register("dob")} />
             </div>
@@ -290,7 +290,7 @@ useEffect(() => {
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              {t.preferredLanguage}
+              {t.preferredLanguage}*
             </label>
             <select className="input cursor-pointer" {...register("language")}>
               <option value="ENGLISH">{t.english}</option>
@@ -304,7 +304,7 @@ useEffect(() => {
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              {t.category}
+              {t.category}*
             </label>
             <select className="input cursor-pointer" {...register("category")}>
               <option value="STUDENT">{t.student}</option>
@@ -317,7 +317,7 @@ useEffect(() => {
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              {t.stateLabel}
+              {t.stateLabel}*
             </label>
             <select className="input cursor-pointer" {...register("state")}>
               <option value="MAHARASHTRA">{t.maharashtra}</option>
@@ -331,7 +331,7 @@ useEffect(() => {
 
           <div>
             <label className="block text-xs font-semibold text-[#A89060] mb-1.5">
-              {t.annualIncome}
+              {t.annualIncome}*
             </label>
             <select className="input cursor-pointer" {...register("income")}>
               <option value="1">{t.incomeBelow}</option>

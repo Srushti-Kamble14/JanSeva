@@ -255,10 +255,10 @@ export const getProfile=async(req,res)=>{
       user,
       phone: "",
       dob: null,
-      preferredLanguage: "ENGLISH",
-      category: "STUDENT",
-      state: "MAHARASHTRA",
-      annualIncome: 1,
+      preferredLanguage: "",
+      category: "",
+      state: "",
+      annualIncome:"",
     },
   });
 }
