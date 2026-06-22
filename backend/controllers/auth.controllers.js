@@ -272,6 +272,12 @@ export const googleCallback = async (req, res) => {
   try {
 
     const user = req.user;
+    
+console.log("GOOGLE CALLBACK HIT");
+console.log("USER:", req.user);
+console.log("ACCESS_TOKEN_SECRET:", !!process.env.ACCESS_TOKEN_SECRET);
+console.log("REFRESH_TOKEN_SECRET:", !!process.env.REFRESH_TOKEN_SECRET);
+console.log("FRONTEND_URL:", process.env.FRONTEND_URL);
 
     const accessToken = jwt.sign(
       {
@@ -294,6 +300,9 @@ export const googleCallback = async (req, res) => {
       }
     );
 
+    console.log("ACCESS TOKEN CREATED");
+console.log("REFRESH TOKEN CREATED");
+
     await prisma.user.update({
       where: {
         id: user.id,
@@ -303,9 +312,16 @@ export const googleCallback = async (req, res) => {
       },
     });
 
+    console.log(
+  `${process.env.FRONTEND_URL}/auth/google-success?accessToken=${accessToken}`
+);
+
    res.redirect(
   `${process.env.FRONTEND_URL}/auth/google-success?accessToken=${accessToken}`
 );
+
+
+
 
   } catch (error) {
     console.log(error);
