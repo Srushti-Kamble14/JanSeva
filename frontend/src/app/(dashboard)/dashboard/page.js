@@ -15,6 +15,7 @@ export default function DashboardPage() {
   const [recommendedSchemes, setRecommendedSchemes] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const name = profile?.user?.fullName?.split(" ")[0] || t.guestUser;
+  const [chatCount, setChatCount] = useState(0);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -40,7 +41,15 @@ export default function DashboardPage() {
             unread: true,
             slug: scheme.fields.slug,
           }))
+
+          
         );
+
+        const history = JSON.parse(
+  localStorage.getItem("chatHistory") || "[]"
+);
+
+setChatCount(history.length);
       } catch (error) {
         console.error(error);
       }
@@ -48,7 +57,7 @@ export default function DashboardPage() {
 
     fetchProfile();
   }, [t.justNow, t.relevantScheme]);
-
+const matchedCount = recommendedSchemes.length;
   return (
     <div className="w-full min-w-0 space-y-6 sm:space-y-8 font-sans">
       <div className="mb-6">
@@ -60,10 +69,26 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t.savedSchemes, value: savedSchemes.length, sub: t.thisWeek },
-          { label: t.aiChats, value: 0, sub: t.past30Days },
-          { label: t.applied, value: 0, sub: t.awaitingResponse },
-          { label: t.matched, value: 0, sub: t.eligibleSchemes },
+          {
+  label: t.savedSchemes,
+  value: savedSchemes.length,
+  sub: t.thisWeek
+},
+{
+  label: t.aiChats,
+  value: chatCount,
+  sub: t.past30Days,
+},
+{
+  label: t.applied,
+  value: appliedSchemes.length,
+  sub: t.awaitingResponse
+},
+{
+  label: t.matched,
+  value: matchedCount,
+  sub: t.eligibleSchemes
+}
         ].map((m) => (
           <div
             key={m.label}
