@@ -291,3 +291,101 @@ body.light .glass-panel {
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(139, 105, 20, 0.12);
 }
+
+/* Light theme contrast guardrails.
+   These only remap dark-theme utility classes while body.light is active. */
+body.light .section-label,
+body.light .scheme-category,
+body.light .metric-value,
+body.light .btn-apply,
+body.light [class*="text-[#D4A017]"],
+body.light [class*="text-[#F2C94C]"],
+body.light [class*="text-[#8B6914]"] {
+  color: var(--gold-dim) !important;
+}
+
+body.light [class*="text-white"],
+body.light [class*="text-[#F0E6C8]"],
+body.light [class~="text-gray-400"] {
+  color: var(--text-main) !important;
+}
+
+body.light [class*="text-[#A89060]"],
+body.light [class*="text-[#6B5A3A]"] {
+  color: var(--text-muted) !important;
+}
+
+body.light [class*="bg-[#0A0A0A]"],
+body.light [class*="bg-[#111111]"],
+body.light [class*="bg-[#1A1A1A]"],
+body.light [class~="bg-black"] {
+  background-color: var(--black2) !important;
+}
+
+body.light [class~="bg-black/10"],
+body.light [class~="bg-black/40"],
+body.light [class~="bg-black/55"],
+body.light [class~="bg-black/60"],
+body.light [class*="bg-white/[0.01]"],
+body.light [class*="bg-white/[0.02]"] {
+  background-color: var(--black3) !important;
+}
+
+body.light [class*="border-[rgba(212,160,23"] {
+  border-color: var(--border) !important;
+}
+
+body.light [class*="hover:text-[#D4A017]"]:hover,
+body.light [class*="hover:text-[#F2C94C]"]:hover {
+  color: var(--gold-dim) !important;
+}
+
+body.light [class*="hover:bg-[rgba(212,160,23"]:hover,
+body.light .group:hover [class*="group-hover:bg-[rgba(212,160,23"] {
+  background-color: var(--gold-pale) !important;
+}
+
+body.light .group:hover [class*="group-hover:text-[#F2C94C]"] {
+  color: var(--gold-dim) !important;
+}
+
+body.light [class*="hover:border-[rgba(212,160,23"]:hover {
+  border-color: var(--border-bright) !important;
+}
+
+body.light input:focus,
+body.light textarea:focus,
+body.light select:focus {
+  border-color: var(--gold-dim) !important;
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.18);
+}
+
+body.light .btn-gold {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dim));
+  color: #0A0A0A;
+  box-shadow: 0 10px 24px rgba(139,105,20,0.16);
+}
+
+body.light .btn-gold:hover {
+  filter: brightness(1.03) saturate(1.06);
+}
+
+body.light .btn-ghost:hover {
+  color: var(--gold-dim);
+}
+
+body.light .input {
+  background: var(--black3);
+  border-color: var(--border);
+  color: var(--text-main);
+}
+
+body.light .input:focus {
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.18);
+}
+
+body.light .scheme-card,
+body.light .metric-card {
+  box-shadow: 0 14px 36px rgba(139,105,20,0.10);
+}
